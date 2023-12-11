@@ -16,3 +16,7 @@ int hello(int main){
 int hello1(int a){
     return a+2;
 }
+
+int hello2(int b){
+    return b+2;
+}
