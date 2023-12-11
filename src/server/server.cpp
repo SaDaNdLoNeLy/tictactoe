@@ -12,3 +12,7 @@ void test(char *buff){
 int hello(int main){
     return main*2;
 }
+
+int hello1(int a){
+    return a+2;
+}
