@@ -1,3 +1,0 @@
-/home/hunglo810/Desktop/tictactoe/build/CMakeFiles/tictactoe.dir
-/home/hunglo810/Desktop/tictactoe/build/CMakeFiles/edit_cache.dir
-/home/hunglo810/Desktop/tictactoe/build/CMakeFiles/rebuild_cache.dir

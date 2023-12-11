@@ -1,1 +1,0 @@
-/usr/bin/g++ -g CMakeFiles/tictactoe.dir/Main.cpp.o -o tictactoe  /usr/lib/x86_64-linux-gnu/libSDL2.so 

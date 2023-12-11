@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/hunglo810/Desktop/tictactoe/build",
-  "command": "/usr/bin/g++  -isystem /usr/include/SDL2 -g -o CMakeFiles/tictactoe.dir/Main.cpp.o -c /home/hunglo810/Desktop/tictactoe/Main.cpp",
-  "file": "/home/hunglo810/Desktop/tictactoe/Main.cpp"
-}
-]
