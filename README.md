@@ -36,3 +36,8 @@ cmake --build ./
 The execute file is in build folder
 
 ## Sample
+- Initializer list
+- Constructor/Destructor struct
+- mutex/thread
+- extern
+- syslog
