@@ -31,7 +31,7 @@ User::~User(){
 }
 
 // Send message
-void User::send(Message* m){
+void User::send(Message *m){
     if (sockfd <= 0) return;
     std::string s = m->to_string();
     

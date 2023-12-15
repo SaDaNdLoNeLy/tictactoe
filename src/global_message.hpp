@@ -97,7 +97,7 @@ struct OKMessage : public Message
 {
     void *user;
 
-    OKMessage(void* user = NULL);
+    OKMessage(void *user = NULL);
 
     std::string to_string();
     void process();

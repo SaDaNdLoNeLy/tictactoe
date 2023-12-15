@@ -46,7 +46,7 @@ UserDB::~UserDB(){
 
 void UserDB::open_db(){
     // Open file with DB_PATH if not exit create new one
-    int f = open(DB_PATH, O_CREAT);
+    int f = open(DB_PATH, O_CREAT, 0660);
 
     if (f < 0){
         syslog(LOG_ERR, "open_db(): %s", strerror(errno));
@@ -114,9 +114,7 @@ User* UserDB::auth_user(std::string username, std::string pass){
 }
 
 int UserDB::create_user(std::string username, std::string pass){
-    std::cout << "Hello World 1" << std::endl;
     std::vector<DataEntry> *db = read_db();
-    std::cout << "Hello World" << std::endl;
 
     // Check name is taken ?
     for (int i = 0; i < db->size(); i++){
