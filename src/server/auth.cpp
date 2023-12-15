@@ -56,25 +56,25 @@ void UserDB::open_db(){
 }
 
 std::vector<DataEntry>* UserDB::read_db(){
-    std::cout << "Hello World 1" << std::endl;
+    // std::cout << "Hello World 1" << std::endl;
     std::vector<DataEntry>* db = new std::vector<DataEntry>();
-    std::cout << "Hello World 2" << std::endl;
+    // std::cout << "Hello World 2" << std::endl;
     // Wait wlock when other thread is write data
     pthread_rwlock_rdlock(&rwlock);
 
-    std::cout << "Hello World 3" << std::endl;
+    // std::cout << "Hello World 3" << std::endl;
     FILE* f = fopen(DB_PATH, "r+");
     if (f == NULL){
         syslog(LOG_ERR, "fopen(): %s", strerror(errno));
     }
-    std::cout << "Hello World 4" << std::endl;
+    // std::cout << "Hello World 4" << std::endl;
     char buffer_usrname[MAX_USERNAME_LEN+1], buffer_pass[MAX_PASS_LEN+1];
 
     while (fscanf(f, "%s %s", buffer_usrname, buffer_pass) != EOF){
-        std::cout << "Hello World 6" << std::endl;
+        // std::cout << "Hello World 6" << std::endl;
         db->push_back(DataEntry(buffer_usrname, buffer_pass));
     }
-    std::cout << "Hello World 5" << std::endl;
+    // std::cout << "Hello World 5" << std::endl;
     fclose(f);
     if (pthread_rwlock_unlock(&rwlock)){
         syslog(LOG_ERR, "UserDB::read_db() rwlock_unlock(): %s", strerror(errno));
