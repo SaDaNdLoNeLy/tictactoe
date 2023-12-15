@@ -1,4 +1,4 @@
-# Client-server chess application
+# Client-server tictactoe application
 
 ## Description
 
