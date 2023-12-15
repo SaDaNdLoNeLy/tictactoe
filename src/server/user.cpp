@@ -30,11 +30,11 @@ User::~User(){
     pthread_mutex_destroy(&mutex);
 }
 
-// Send message to User
+// Send message
 void User::send(Message* m){
     if (sockfd <= 0) return;
     std::string s = m->to_string();
-
+    
     pthread_mutex_lock(&mutex);
     ssize_t len = write(sockfd, s.c_str(), s.size());
     pthread_mutex_unlock(&mutex);

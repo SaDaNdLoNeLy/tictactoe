@@ -42,7 +42,7 @@ void MessageQueue::push(Message *m)
     pthread_mutex_unlock(&mutex);
 }
 
-Message *MessageQueue::pop()
+Message* MessageQueue::pop()
 {
     pthread_mutex_lock(&mutex);
     // If the queue is empty, wait until it becomes non-empty
@@ -56,7 +56,7 @@ Message *MessageQueue::pop()
     return m;
 }
 
-void *MessageQueueWorker::work(void *data)
+void* MessageQueueWorker::work(void *data)
 {
     MessageQueue *q = (MessageQueue *)data;
     while (true)
@@ -86,7 +86,7 @@ std::string StartMessage::to_string()
     return s;
 }
 
-std::string MovedMessage::to_string()
+std::string MoveMessage::to_string()
 {
     std::string s = "MOVE " + std::to_string(coord) + "\n";
     return s;
