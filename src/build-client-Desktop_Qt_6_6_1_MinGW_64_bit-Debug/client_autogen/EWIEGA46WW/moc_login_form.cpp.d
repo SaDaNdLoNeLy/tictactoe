@@ -1,5 +1,10 @@
 D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/EWIEGA46WW/moc_login_form.cpp: D:/Code/Network-Programming/project/tictactoe/src/client/login_form.h \
   D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/moc_predefs.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QJsonArray \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QJsonDocument \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QJsonObject \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QJsonValue \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QObject \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20type_traits.h \
@@ -18,6 +23,9 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbytearrayalgorithms.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbytearraylist.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbytearrayview.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qcalendar.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qcborcommon.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qcborvalue.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qchar.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qcompare.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qcompare_impl.h \
@@ -30,7 +38,9 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qcontiguouscache.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qdarwinhelpers.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qdatastream.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qdatetime.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qdebug.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qendian.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qexceptionhandling.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qflags.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qfloat16.h \
@@ -42,12 +52,18 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qglobalstatic.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qhash.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qhashfunctions.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qiodevice.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiodevicebase.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiterable.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiterator.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qjsonarray.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qjsondocument.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qjsonobject.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qjsonvalue.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qlatin1stringview.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qline.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qlist.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qlocale.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qlogging.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qmalloc.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qmap.h \
@@ -68,6 +84,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qprocessordetection.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qrect.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qrefcount.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qregularexpression.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qscopeguard.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qset.h \
@@ -110,6 +127,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtypes.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qurl.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qutf8stringview.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/quuid.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qvariant.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qvarlengtharray.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qversiontagging.h \
@@ -128,6 +146,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpaintdevice.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpalette.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpen.h \
+  C:/Qt/6.6.1/mingw_64/include/QtGui/qpicture.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpixelformat.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpixmap.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpolygon.h \
@@ -144,11 +163,20 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtGui/qtransform.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qwindowdefs_win.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/QTcpSocket \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qabstractsocket.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qhostaddress.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtcpsocket.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+  C:/Qt/6.6.1/mingw_64/include/QtWidgets/QLabel \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QPushButton \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QWidget \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qabstractbutton.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qframe.h \
+  C:/Qt/6.6.1/mingw_64/include/QtWidgets/qlabel.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qsizepolicy.h \
@@ -355,5 +383,6 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/time.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/vadefs.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h \
+  D:/Code/Network-Programming/project/tictactoe/src/client/TcpClient.h \
   D:/Code/Network-Programming/project/tictactoe/src/client/forgot_password.h \
   D:/Code/Network-Programming/project/tictactoe/src/client/register_form.h

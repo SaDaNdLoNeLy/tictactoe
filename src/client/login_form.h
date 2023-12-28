@@ -4,8 +4,14 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QLabel>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 #include "register_form.h"
 #include "forgot_password.h"
+#include "TcpClient.h"
 
 
 namespace Ui {
@@ -19,6 +25,8 @@ class loginform : public QWidget
 public:
     explicit loginform(QWidget *parent = nullptr);
     ~loginform();
+
+    void setTcpClient(TcpClient *client);
 
 signals:
     void backButtonClicked();
@@ -34,12 +42,23 @@ private slots:
 
     void on_login_btn_clicked();
 
+    void handleServerResponse(const QByteArray& responseData);
+
+
 private:
     Ui::loginform *ui;
     registerform *res_form;
     forgot_password *forgot_form;
-    QLineEdit *password;
+
+    QLineEdit *username_input;
+    QLineEdit *password_input;
+
+    QLabel *warning_username;
+    QLabel *warning_password;
+
     QPushButton *show_pass_btn;
+
+    TcpClient *tcpClient;
 
 };
 

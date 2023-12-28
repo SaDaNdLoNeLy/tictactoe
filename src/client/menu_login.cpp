@@ -15,6 +15,8 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     joinRoomInput = QWidget::findChild<QLineEdit*>("joinInput");
     createRoom->close();
     joinRoom->close();
+
+    qDebug() << "Main menu login client: " << &client << "\n";
 }
 
 mainmenulogin::~mainmenulogin()
@@ -69,5 +71,9 @@ void mainmenulogin::on_join_clicked()
     std::cout << roomName << std::endl;
     Game_Screen *room = new Game_Screen();
     room->show();
+}
+
+void mainmenulogin::setClient(TcpClient *client){
+    this->client = client;
 }
 

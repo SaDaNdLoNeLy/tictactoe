@@ -2,13 +2,16 @@
 #include "./ui_mainwindow.h"
 #include "./login_form.h"
 #include "game_screen.h"
+#include "TcpClient.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    login = new loginform();
+    // login = new loginform();
+
+    qDebug() << "Main window client: " << &client << "\n";
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +22,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-
+    loginform *login = new loginform();
+    login->setTcpClient(&client);
+    client.connectToDevice("127.0.0.1", 3000);
     login->show();
     this->close();
 }

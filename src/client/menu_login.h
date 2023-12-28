@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLineEdit>
 #include <QPushButton>
+#include "TcpClient.h"
 #include "game_screen.h"
 
 namespace Ui {
@@ -18,6 +19,9 @@ class mainmenulogin : public QWidget
 public:
     explicit mainmenulogin(QWidget *parent = nullptr);
     ~mainmenulogin();
+
+    void setClient(TcpClient *client);
+    void getClient();
 
 private slots:
     void on_logout_clicked();
@@ -40,6 +44,8 @@ private:
     QFrame *joinRoom;
     QLineEdit *createRoomInput;
     QLineEdit *joinRoomInput;
+
+    TcpClient *client;
 
 };
 

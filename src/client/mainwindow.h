@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "login_form.h"
+#include "TcpClient.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,7 +27,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    loginform *login;
+    // loginform *login;
+    TcpClient client;
+
 
 };
 #endif // MAINWINDOW_H

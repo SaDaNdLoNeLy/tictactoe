@@ -48,7 +48,6 @@ QFrame{
 	background-color: #00FFFF;
 	color: red;
 	border: none;
-	cursor: arrow- cursor;
 }
 
 QLineEdit{
