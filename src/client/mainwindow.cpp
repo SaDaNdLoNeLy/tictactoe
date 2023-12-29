@@ -9,9 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // login = new loginform();
-
-    qDebug() << "Main window client: " << &client << "\n";
 }
 
 MainWindow::~MainWindow()
@@ -19,12 +16,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_pushButton_clicked()
 {
     loginform *login = new loginform();
-    login->setTcpClient(&client);
     client.connectToDevice("127.0.0.1", 3000);
+    login->setTcpClient(&client); // Truyền đối tượng TcpClient vào loginform
     login->show();
     this->close();
 }
@@ -42,3 +38,6 @@ void MainWindow::on_playoffline_clicked()
     game_test->show();
 }
 
+TcpClient& MainWindow::getTcpClient(){
+    return client;
+}

@@ -8,6 +8,7 @@ enum class RequestType
 {
     LOGIN,
     LOGOUT,
+    REGISTER,
     // Add more request types as needed
 };
 
@@ -15,6 +16,7 @@ enum class RespondType
 {
     LOGIN,
     LOGOUT,
+    REGISTER,
 };
 
 class TcpClient : public QObject
@@ -38,6 +40,9 @@ signals:
 
 private slots:
     void onReadyRead();
+
+public slots:
+    void handleServerResponse(const QByteArray& responseData);
 
 private:
     QTcpSocket _socket;

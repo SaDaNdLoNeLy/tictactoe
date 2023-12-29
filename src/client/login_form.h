@@ -27,6 +27,7 @@ public:
     ~loginform();
 
     void setTcpClient(TcpClient *client);
+    TcpClient* getTcpClient();
 
 signals:
     void backButtonClicked();

@@ -1,5 +1,6 @@
 D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/EWIEGA46WW/moc_register_form.cpp: D:/Code/Network-Programming/project/tictactoe/src/client/register_form.h \
   D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/moc_predefs.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QObject \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20type_traits.h \
@@ -42,6 +43,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qglobalstatic.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qhash.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qhashfunctions.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qiodevice.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiodevicebase.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiterable.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qiterator.h \
@@ -144,6 +146,13 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtGui/qtransform.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qwindowdefs_win.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/QTcpSocket \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qabstractsocket.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qhostaddress.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtcpsocket.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
+  C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QPushButton \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QWidget \
@@ -354,4 +363,5 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/sys/types.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/time.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/vadefs.h \
-  C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h
+  C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h \
+  D:/Code/Network-Programming/project/tictactoe/src/client/TcpClient.h

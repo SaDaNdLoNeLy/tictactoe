@@ -7,7 +7,6 @@
 #include <QLabel>
 #include <QIcon>
 #include "menu_login.h"
-#include <iostream>
 
 loginform::loginform(QWidget *parent)
     : QWidget(parent)
@@ -22,8 +21,6 @@ loginform::loginform(QWidget *parent)
 
     warning_username = QWidget::findChild<QLabel*>("warning_username");
     warning_password = QWidget::findChild<QLabel*>("warning_password");
-
-    qDebug() << "Login From Client " << &tcpClient << "\n";
 }
 
 loginform::~loginform()
@@ -31,6 +28,13 @@ loginform::~loginform()
     delete ui;
 }
 
+void loginform::setTcpClient(TcpClient *client){
+    tcpClient = client;
+}
+
+TcpClient* loginform::getTcpClient(){
+    return tcpClient;
+}
 
 void loginform::on_forgot_clicked()
 {
@@ -40,8 +44,11 @@ void loginform::on_forgot_clicked()
 
 void loginform::on_Register_clicked()
 {
+    // res_form->show();
+    // this->close();
+    res_form->setTcpClient(tcpClient);
     res_form->show();
-    this->close();
+    this->hide();
 }
 
 void loginform::on_Back_btn_clicked()
@@ -51,9 +58,6 @@ void loginform::on_Back_btn_clicked()
     MainWindow *main_UI = new MainWindow();
     main_UI->show();
 }
-
-
-
 
 void loginform::on_show_password_clicked()
 {
@@ -72,10 +76,9 @@ void loginform::on_show_password_clicked()
     }
 }
 
-
 void loginform::on_login_btn_clicked()
 {
-    mainmenulogin *main_menu = new mainmenulogin();
+    // mainmenulogin *main_menu = new mainmenulogin();
     if(username_input->text().isEmpty()){
         warning_username->setText("Username cannot be blank !!!");
         return;
@@ -96,12 +99,6 @@ void loginform::on_login_btn_clicked()
 
     tcpClient->sendRequestToServer(RequestType::LOGIN, user);
     connect(tcpClient, &TcpClient::dataReady, this, &loginform::handleServerResponse);
-    // qDebug() << tcpClient->getServerResponse();
-}
-
-void loginform::setTcpClient(TcpClient *client){
-    tcpClient = client;
-    // connect(tcpClient, &TcpClient::dataReady, this, &loginform::handleServerResponse);
 }
 
 void loginform::handleServerResponse(const QByteArray& responseData){
@@ -111,10 +108,7 @@ void loginform::handleServerResponse(const QByteArray& responseData){
     }else if(responseData == "success"){
         this->close();
         mainmenulogin *menu = new mainmenulogin();
-        // menu->setClient(tcpClient);
+        menu->setClient(tcpClient);
         menu->show();
-    }else if(responseData == "block"){
-        warning_password->setText("This account has been blocked!");
     }
 }
-

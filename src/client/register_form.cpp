@@ -18,6 +18,14 @@ registerform::~registerform()
     delete ui;
 }
 
+void registerform::setTcpClient(TcpClient *client){
+    this->client = client;
+}
+
+TcpClient& registerform::getTcpClient(){
+    return *client;
+}
+
 void registerform::on_show_password_clicked()
 {
     QIcon *hide_pass = new QIcon(":/hide-password.svg");
@@ -35,7 +43,6 @@ void registerform::on_show_password_clicked()
     }
 }
 
-
 void registerform::on_register_btn_clicked()
 {
     QLineEdit *username = QWidget::findChild<QLineEdit*>("username");
@@ -44,58 +51,51 @@ void registerform::on_register_btn_clicked()
     QLabel *warning_username = QWidget::findChild<QLabel*>("warning_username");
     QLabel *warning_password = QWidget::findChild<QLabel*>("warning_password");
     QLabel *warning_confirm_password = QWidget::findChild<QLabel*>("warning_confirm_password");
-    bool valid_username = false;
-    bool valid_password = false;
-    bool valid_confirm_password = false;
-
 
     if(username && password && confirm_password && warning_username && warning_password && warning_confirm_password){
         // check username blank
-        if(username->text().toStdString() == ""){
+        if(username->text().isEmpty()){
             warning_username->setText("Username cannot be blank!!!");
-            valid_username = false;
+            return;
         }else{
             warning_username->setText("");
-            valid_username = true;
         }
 
         // check password blank
-        if(password->text().toStdString() == ""){
+        if(password->text().isEmpty()){
             warning_password->setText("Password cannot be blank!!!");
-            valid_password = false;
+            return;
         }else{
             warning_password->setText("");
-            valid_password = true;
         }
 
         // check confirm password blank
-        if(confirm_password->text().toStdString() == ""){
+        if(confirm_password->text().isEmpty()){
             warning_confirm_password->setText("Confirm password cannot be blank!!!");
-            valid_confirm_password = false;
+            return;
         }else{
-            if(password->text().toStdString() == confirm_password->text().toStdString()){
+            if(password->text() == confirm_password->text()){
                 warning_confirm_password->setText("");
-                valid_confirm_password = true;
             }else{
                 warning_confirm_password->setText("Confirm password must be similar to password");
-                valid_confirm_password = false;
+                return;
             }
         }
-
-        if(valid_username && valid_password && valid_confirm_password){
-            std::cout << "Login successfully" << std::endl;
-        }
+        QJsonObject newUser;
+        newUser["username"] = username->text();
+        newUser["password"] = password->text();
+        client->sendRequestToServer(RequestType::REGISTER, newUser);
+        connect(client, &TcpClient::dataReady, this, &registerform::handleServerResponse);
     }
 }
-
 
 void registerform::on_Login_clicked()
 {
     loginform *loginUi = new loginform();
+    loginUi->setTcpClient(client);
     loginUi->show();
     this->close();
 }
-
 
 void registerform::on_show_confirm_password_clicked()
 {
@@ -114,11 +114,15 @@ void registerform::on_show_confirm_password_clicked()
     }
 }
 
-
 void registerform::on_Back_btn_clicked()
 {
-    this->close();
     loginform *loginUI = new loginform();
+    loginUI->setTcpClient(client);
     loginUI->show();
+    this->close();
+}
+
+void registerform::handleServerResponse(const QByteArray& responseData){
+    qDebug() << responseData << "\n";
 }
 

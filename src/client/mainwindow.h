@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "login_form.h"
 #include "TcpClient.h"
+#include <QTcpSocket>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,18 +19,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    TcpClient& getTcpClient();
+
 
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
-
     void on_playoffline_clicked();
+
 
 private:
     Ui::MainWindow *ui;
     // loginform *login;
     TcpClient client;
-
+    QTcpSocket *client_socket;
 
 };
 #endif // MAINWINDOW_H

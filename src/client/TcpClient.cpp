@@ -50,3 +50,7 @@ void TcpClient::sendRequestToServer(RequestType type, QJsonObject data){
 
     _socket.write(jsonData);
 }
+
+void TcpClient::handleServerResponse(const QByteArray& responseData){
+    qDebug() << responseData << "\n";
+}
