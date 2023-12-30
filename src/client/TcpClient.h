@@ -41,9 +41,6 @@ signals:
 private slots:
     void onReadyRead();
 
-public slots:
-    void handleServerResponse(const QByteArray& responseData);
-
 private:
     QTcpSocket _socket;
     QString _ip;
