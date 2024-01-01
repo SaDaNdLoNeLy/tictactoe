@@ -11,6 +11,13 @@ registerform::registerform(QWidget *parent)
     , ui(new Ui::registerform)
 {
     ui->setupUi(this);
+
+    username = QWidget::findChild<QLineEdit*>("username");
+    password = QWidget::findChild<QLineEdit*>("password");
+    confirm_password = QWidget::findChild<QLineEdit*>("confirm_password");
+    warning_username = QWidget::findChild<QLabel*>("warning_username");
+    warning_password = QWidget::findChild<QLabel*>("warning_password");
+    warning_confirm_password = QWidget::findChild<QLabel*>("warning_confirm_password");
 }
 
 registerform::~registerform()
@@ -20,6 +27,7 @@ registerform::~registerform()
 
 void registerform::setTcpClient(TcpClient *client){
     this->client = client;
+    connect(this->client, &TcpClient::dataReady, this, &registerform::handleServerResponse);
 }
 
 TcpClient& registerform::getTcpClient(){
@@ -45,13 +53,6 @@ void registerform::on_show_password_clicked()
 
 void registerform::on_register_btn_clicked()
 {
-    QLineEdit *username = QWidget::findChild<QLineEdit*>("username");
-    QLineEdit *password = QWidget::findChild<QLineEdit*>("password");
-    QLineEdit *confirm_password = QWidget::findChild<QLineEdit*>("confirm_password");
-    QLabel *warning_username = QWidget::findChild<QLabel*>("warning_username");
-    QLabel *warning_password = QWidget::findChild<QLabel*>("warning_password");
-    QLabel *warning_confirm_password = QWidget::findChild<QLabel*>("warning_confirm_password");
-
     if(username && password && confirm_password && warning_username && warning_password && warning_confirm_password){
         // check username blank
         if(username->text().isEmpty()){
@@ -85,7 +86,6 @@ void registerform::on_register_btn_clicked()
         newUser["username"] = username->text();
         newUser["password"] = password->text();
         client->sendRequestToServer(RequestType::REGISTER, newUser);
-        connect(client, &TcpClient::dataReady, this, &registerform::handleServerResponse);
     }
 }
 
@@ -119,10 +119,21 @@ void registerform::on_Back_btn_clicked()
     loginform *loginUI = new loginform();
     loginUI->setTcpClient(client);
     loginUI->show();
-    this->close();
+    this->hide();
 }
 
 void registerform::handleServerResponse(const QByteArray& responseData){
-    qDebug() << responseData << "\n";
+    // qDebug() << responseData << "\n";
+    QJsonDocument response = QJsonDocument::fromJson(responseData);
+    if(response["type"] == static_cast<int>(RespondType::REGISTER)){
+        if(response["message"] == "register successfully"){
+            loginform *loginUI = new loginform();
+            loginUI->setTcpClient(client);
+            loginUI->show();
+            this->hide();
+        }else if(response["message"] == "register fail"){
+            warning_username->setText("This account has already existed");
+        }
+    }
 }
 

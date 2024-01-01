@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     loginform *login = new loginform();
-    client.connectToDevice("127.0.0.1", 3000);
+    client.connectToDevice("192.168.1.6", 3000);
     login->setTcpClient(&client); // Truyền đối tượng TcpClient vào loginform
     login->show();
     this->close();

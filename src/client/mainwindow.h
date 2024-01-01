@@ -19,8 +19,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    TcpClient& getTcpClient();
 
+    TcpClient& getTcpClient();
 
 private slots:
     void on_pushButton_clicked();
@@ -32,7 +32,5 @@ private:
     Ui::MainWindow *ui;
     // loginform *login;
     TcpClient client;
-    QTcpSocket *client_socket;
-
 };
 #endif // MAINWINDOW_H

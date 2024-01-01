@@ -15,8 +15,6 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     joinRoomInput = QWidget::findChild<QLineEdit*>("joinInput");
     createRoom->close();
     joinRoom->close();
-
-    qDebug() << "Main menu login client: " << &client << "\n";
 }
 
 mainmenulogin::~mainmenulogin()
@@ -27,6 +25,7 @@ mainmenulogin::~mainmenulogin()
 void mainmenulogin::on_logout_clicked()
 {
     MainWindow *logout_UI = new MainWindow();
+
     logout_UI->show();
     this->close();
 }

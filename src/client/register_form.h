@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include "TcpClient.h"
+#include <QLabel>
 
 
 namespace Ui {
@@ -44,6 +45,13 @@ private:
     Ui::registerform *ui;
     QPushButton *show_btn;
     TcpClient *client;
+
+    QLineEdit *username;
+    QLineEdit *password;
+    QLineEdit *confirm_password;
+    QLabel *warning_username;
+    QLabel *warning_password;
+    QLabel *warning_confirm_password;
 };
 
 #endif // REGISTER_FORM_H

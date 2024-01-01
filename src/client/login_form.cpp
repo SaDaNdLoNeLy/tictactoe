@@ -30,6 +30,7 @@ loginform::~loginform()
 
 void loginform::setTcpClient(TcpClient *client){
     tcpClient = client;
+    connect(tcpClient, &TcpClient::dataReady, this, &loginform::handleServerResponse);
 }
 
 TcpClient* loginform::getTcpClient(){
@@ -44,8 +45,6 @@ void loginform::on_forgot_clicked()
 
 void loginform::on_Register_clicked()
 {
-    // res_form->show();
-    // this->close();
     res_form->setTcpClient(tcpClient);
     res_form->show();
     this->hide();
@@ -78,7 +77,6 @@ void loginform::on_show_password_clicked()
 
 void loginform::on_login_btn_clicked()
 {
-    // mainmenulogin *main_menu = new mainmenulogin();
     if(username_input->text().isEmpty()){
         warning_username->setText("Username cannot be blank !!!");
         return;
@@ -98,17 +96,57 @@ void loginform::on_login_btn_clicked()
     user["password"] = password_input->text();
 
     tcpClient->sendRequestToServer(RequestType::LOGIN, user);
-    connect(tcpClient, &TcpClient::dataReady, this, &loginform::handleServerResponse);
 }
 
 void loginform::handleServerResponse(const QByteArray& responseData){
-    // qDebug() << "Received response from server:" << responseData;
-    if(responseData == "fail"){
-        warning_password->setText("Wrong username or password. Try again!");
-    }else if(responseData == "success"){
-        this->close();
-        mainmenulogin *menu = new mainmenulogin();
-        menu->setClient(tcpClient);
-        menu->show();
+    // qDebug() << responseData << "\n";
+    QJsonDocument jsonObject = QJsonDocument::fromJson(responseData);
+    if(jsonObject["type"] == static_cast<int>(RespondType::LOGIN)){
+        if(jsonObject["message"] == "fail"){
+            warning_password->setText("Wrong username or password. Try again!");
+        }else if(jsonObject["message"] == "already login"){
+            warning_password->setText("This account has been logged in another device");
+        }else if(jsonObject["message"] == "success"){
+            warning_password->setText("");
+
+            QString username = jsonObject["user"]["username"].toString();
+            QString status = jsonObject["user"]["status"].toString();
+            int wins = jsonObject["user"]["wins"].toInt();
+            int loses = jsonObject["user"]["loses"].toInt();
+            bool isFree = jsonObject["user"]["isFree"].toBool();
+            double winRate = jsonObject["user"]["winRate"].toDouble();
+            int elo = jsonObject["user"]["elo"].toInt();
+            tcpClient->setUser(username, status, wins, loses, isFree, winRate, elo);
+
+            this->hide();
+            mainmenulogin *menu = new mainmenulogin();
+            menu->setClient(tcpClient);
+            menu->show();
+        }else{
+            warning_password->setText("This account is not existed");
+        }
+    }else if(jsonObject["type"] == static_cast<int>(RespondType::ONLINEPLAYER)){
+        // qDebug() << jsonObject << "\n";
+        std::vector<user> onlineUsers;
+        if(jsonObject["message"] == "online users"){
+            QJsonArray usersArray = jsonObject["users"].toArray();
+
+            for(auto userValue : usersArray){
+                QJsonObject userObject = userValue.toObject();
+
+                user currentUser;
+                currentUser.elo = userObject["elo"].toInt();
+                currentUser.isFree = userObject["isFree"].toBool();
+                currentUser.loses = userObject["loses"].toInt();
+                currentUser.status = userObject["status"].toString();
+                currentUser.username = userObject["username"].toString();
+                currentUser.winRate = userObject["winRate"].toDouble();
+                currentUser.wins = userObject["wins"].toInt();
+
+                onlineUsers.push_back(currentUser);
+            }
+            qDebug() << "size: " << onlineUsers.size() << "\n";
+            tcpClient->setOnlineUser(onlineUsers);
+        }
     }
 }

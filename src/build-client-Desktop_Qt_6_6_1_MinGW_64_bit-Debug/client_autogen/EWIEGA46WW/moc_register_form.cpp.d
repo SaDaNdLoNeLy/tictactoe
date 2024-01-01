@@ -130,6 +130,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpaintdevice.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpalette.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpen.h \
+  C:/Qt/6.6.1/mingw_64/include/QtGui/qpicture.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpixelformat.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpixmap.h \
   C:/Qt/6.6.1/mingw_64/include/QtGui/qpolygon.h \
@@ -153,11 +154,13 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
   C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
   C:/Qt/6.6.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+  C:/Qt/6.6.1/mingw_64/include/QtWidgets/QLabel \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QPushButton \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/QWidget \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qabstractbutton.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qframe.h \
+  C:/Qt/6.6.1/mingw_64/include/QtWidgets/qlabel.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.6.1/mingw_64/include/QtWidgets/qsizepolicy.h \

@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QByteArray>
+#include <QtNetwork/QNetworkInterface>
 
 TcpClient::TcpClient() {
     connect(&_socket, &QTcpSocket::connected, this, &TcpClient::connected);
@@ -35,6 +36,7 @@ void TcpClient::onReadyRead(){
 
 QByteArray TcpClient::getServerResponse(){
     if (_socket.bytesAvailable() > 0) {
+        // qDebug() << _socket.readAll() << "\n";
         return _socket.readAll();
     }
     return QByteArray();
@@ -49,4 +51,26 @@ void TcpClient::sendRequestToServer(RequestType type, QJsonObject data){
     QByteArray jsonData = doc.toJson();
 
     _socket.write(jsonData);
+}
+
+user TcpClient::getUser(){
+    return clientUser;
+}
+
+void TcpClient::setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo){
+    this->clientUser.username = username;
+    this->clientUser.status = status;
+    this->clientUser.wins = wins;
+    this->clientUser.loses = loses;
+    this->clientUser.isFree = isFree;
+    this->clientUser.winRate = winRate;
+    this->clientUser.elo = elo;
+    qDebug() << this->clientUser.username << "\n";
+}
+
+std::vector<user> TcpClient::getOnlineUser(){
+    return onlineUser;
+}
+void TcpClient::setOnlineUser(std::vector<user> onlineUser){
+    this->onlineUser = onlineUser;
 }
