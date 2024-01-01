@@ -16,6 +16,7 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     joinRoomInput = QWidget::findChild<QLineEdit*>("joinInput");
 
     warning_create = QWidget::findChild<QLabel*>("warning_create");
+    warning_join = QWidget::findChild<QLabel*>("warning_join");
     createRoom->close();
     joinRoom->close();
 
@@ -55,7 +56,7 @@ void mainmenulogin::on_cancel_clicked()
 void mainmenulogin::on_create_clicked()
 {
     QString roomName = createRoomInput->text();
-    qDebug() << roomName << "\n";
+    // qDebug() << roomName << "\n";
 
     user clientUser = client->getUser();
 
@@ -81,10 +82,19 @@ void mainmenulogin::on_cancel_3_clicked()
 
 void mainmenulogin::on_join_clicked()
 {
-    std::string roomName = joinRoomInput->text().toStdString();
-    std::cout << roomName << std::endl;
-    Game_Screen *room = new Game_Screen();
-    room->show();
+    QString roomName = joinRoomInput->text();
+    // std::cout << roomName << std::endl;
+    // Game_Screen *room = new Game_Screen();
+    // room->show();
+
+    user clientUser = client->getUser();
+
+    QJsonObject roomInfo;
+    roomInfo["room name"] = roomName;
+    roomInfo["player 2"] = clientUser.username;
+
+    client->sendRequestToServer(RequestType::JOINROOM, roomInfo);
+
 }
 
 void mainmenulogin::setClient(TcpClient *client){
@@ -93,7 +103,6 @@ void mainmenulogin::setClient(TcpClient *client){
 }
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
-    qDebug() << responseData << "\n";
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
     if(jsonResponse["type"] == static_cast<int>(RespondType::CREATEROOM)){
         if(jsonResponse["message"] == "room created"){
@@ -108,17 +117,47 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
 
             std::vector<room> roomList = client->getRoomList();
             roomList.push_back(newRoom);
-            // qDebug() << "Room list size: " << roomList.size() << "\n";
             client->setRoomList(roomList);
 
             warning_create->setText("");
             qDebug() << "Room list size: " << client->getRoomList().size() << "\n";
 
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
 
         }else if(jsonResponse["message"] == "created fail"){
             warning_create->setText("Room name is existed");
         }else if(jsonResponse["message"] == "update room list"){
             qDebug() << "list room size " << client->getRoomList().size();
+        }
+    }else if(jsonResponse["type"] == static_cast<int>(RespondType::JOINROOM)){
+        // qDebug() << jsonResponse << "\n";
+        if(jsonResponse["message"] == "joined success"){
+            warning_join->setText("");
+            QString player2_username = jsonResponse["player 2"].toString();
+            QString room_name = jsonResponse["room name"].toString();
+            player *playerO = new player();
+            playerO->username = player2_username;
+            playerO->PIECETYPE = 'O';
+            playerO->turn = -1;
+
+            std::vector<room> roomList = client->getRoomList();
+            for(auto room : roomList){
+                if(room.roomName == room_name){
+                    room.addPlayer(*playerO);
+                }
+            }
+            client->setRoomList(roomList);
+            // qDebug() << "Room list after join: " << client->getRoomList().size() << "\n";
+
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
+        }else if(jsonResponse["message"] == "joined failed"){
+            warning_join->setText("This room is not existed!!");
         }
     }
 }

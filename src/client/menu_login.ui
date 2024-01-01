@@ -320,7 +320,7 @@ font-size: 15px;</string>
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>20</y>
+     <y>180</y>
      <width>400</width>
      <height>150</height>
     </rect>

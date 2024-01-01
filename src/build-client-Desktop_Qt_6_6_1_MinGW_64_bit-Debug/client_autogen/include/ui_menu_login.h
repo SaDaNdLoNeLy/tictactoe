@@ -171,7 +171,7 @@ public:
 "font-size: 15px;"));
         joinRoom = new QFrame(mainmenulogin);
         joinRoom->setObjectName("joinRoom");
-        joinRoom->setGeometry(QRect(170, 20, 400, 150));
+        joinRoom->setGeometry(QRect(170, 180, 400, 150));
         joinRoom->setFrameShape(QFrame::StyledPanel);
         joinRoom->setFrameShadow(QFrame::Raised);
         label_3 = new QLabel(joinRoom);

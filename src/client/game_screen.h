@@ -39,6 +39,7 @@ private:
     QGridLayout *randomLayout;
     QFrame *frames[9];
     QPushButton *randomButton[10];
+    room *client_room;
 
     QPushButton *createButton(QString&, const QString/*const char**/);
 
