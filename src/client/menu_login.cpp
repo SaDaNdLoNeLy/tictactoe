@@ -15,6 +15,8 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     joinRoomInput = QWidget::findChild<QLineEdit*>("joinInput");
     createRoom->close();
     joinRoom->close();
+
+    // connect(client, &TcpClient::dataReady, this, &mainmenulogin::handleServerResponse);
 }
 
 mainmenulogin::~mainmenulogin()
@@ -24,9 +26,13 @@ mainmenulogin::~mainmenulogin()
 
 void mainmenulogin::on_logout_clicked()
 {
-    MainWindow *logout_UI = new MainWindow();
+    QJsonObject user;
+    user["username"] = client->getUser().username;
+    client->sendRequestToServer(RequestType::LOGOUT, user);
+    client->disconnectFromDevice();
+    MainWindow *mainwindow = new MainWindow();
+    mainwindow->show();
 
-    logout_UI->show();
     this->close();
 }
 
@@ -74,5 +80,10 @@ void mainmenulogin::on_join_clicked()
 
 void mainmenulogin::setClient(TcpClient *client){
     this->client = client;
+    connect(client, &TcpClient::dataReady, this, &mainmenulogin::handleServerResponse);
+}
+
+void mainmenulogin::handleServerResponse(const QByteArray& responseData){
+    qDebug() << responseData << "\n";
 }
 

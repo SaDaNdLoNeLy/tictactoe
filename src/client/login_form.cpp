@@ -129,7 +129,7 @@ void loginform::handleServerResponse(const QByteArray& responseData){
         // qDebug() << jsonObject << "\n";
         std::vector<user> onlineUsers;
         if(jsonObject["message"] == "online users"){
-            QJsonArray usersArray = jsonObject["users"].toArray();
+            QJsonArray usersArray = jsonObject["online users"].toArray();
 
             for(auto userValue : usersArray){
                 QJsonObject userObject = userValue.toObject();

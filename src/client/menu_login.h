@@ -38,6 +38,8 @@ private slots:
 
     void on_join_clicked();
 
+    void handleServerResponse(const QByteArray& responseData);
+
 private:
     Ui::mainmenulogin *ui;
     QFrame *createRoom;
