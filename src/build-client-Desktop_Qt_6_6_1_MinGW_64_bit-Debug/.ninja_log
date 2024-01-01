@@ -63,3 +63,15 @@
 425	5590	7258374899579218	CMakeFiles/client.dir/login_form.cpp.obj	49cbc23380bba0a8
 419	5874	7258374902429575	CMakeFiles/client.dir/menu_login.cpp.obj	8b1250378cd94b0b
 5875	6780	7258374911438486	client.exe	3adbf74bf0b16d13
+15	211	7258378340156796	client_autogen/timestamp	94b83db9c429d08
+15	211	7258378340156796	client_autogen/mocs_compilation.cpp	94b83db9c429d08
+15	211	7258378340156796	D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/timestamp	94b83db9c429d08
+15	211	7258378340156796	D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/mocs_compilation.cpp	94b83db9c429d08
+228	2619	7258378364225279	CMakeFiles/client.dir/forgot_password.cpp.obj	3618b9075ece815e
+249	2841	7258378366459901	CMakeFiles/client.dir/online_list.cpp.obj	d7a07043f9a933e9
+239	3058	7258378368604286	CMakeFiles/client.dir/game_screen.cpp.obj	d3dad80ce6786fd4
+224	3088	7258378368912546	CMakeFiles/client.dir/mainwindow.cpp.obj	7a8c9aaddbed4448
+244	3238	7258378370412814	CMakeFiles/client.dir/register_form.cpp.obj	8e0abf6b2a9b3742
+235	3408	7258378372117116	CMakeFiles/client.dir/menu_login.cpp.obj	8b1250378cd94b0b
+232	3439	7258378372414792	CMakeFiles/client.dir/login_form.cpp.obj	49cbc23380bba0a8
+3439	4086	7258378378839423	client.exe	3adbf74bf0b16d13
