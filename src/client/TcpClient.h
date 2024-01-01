@@ -9,7 +9,10 @@ enum class RequestType
     LOGIN,
     LOGOUT,
     REGISTER,
-    ONLINEPLAYER,
+    GETDATA,
+    CREATEROOM,
+    JOINROOM,
+    ROOMLIST,
     // Add more request types as needed
 };
 
@@ -18,7 +21,10 @@ enum class RespondType
     LOGIN,
     LOGOUT,
     REGISTER,
-    ONLINEPLAYER,
+    GETDATA,
+    CREATEROOM,
+    JOINROOM,
+    ROOMLIST,
 };
 
 struct user{
@@ -29,6 +35,36 @@ struct user{
     int elo;
     bool isFree;
     double winRate;
+};
+
+struct player{
+    QString username;
+    int turn;
+    QChar PIECETYPE;
+};
+
+struct room{
+    QString roomName;
+    std::vector<player> players;
+    int turn;
+    bool isFull;
+
+    room(QString name) : roomName(name), isFull(false){}
+
+    bool hasSpace() const{
+        return players.size() < 2;
+    }
+
+    bool addPlayer(const player& newUser){
+        if(hasSpace()){
+            players.push_back(newUser);
+            if(players.size() == 2){
+                isFull = true;
+            }
+            return true;
+        }
+        return false;
+    }
 };
 
 class TcpClient : public QObject
@@ -45,9 +81,15 @@ public:
 
     user getUser();
     void setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo);
+    void setUserfromUser(user newUpdate);
 
     std::vector<user> getOnlineUser();
     void setOnlineUser(std::vector<user> onlineUser);
+
+    std::vector<room> getRoomList();
+    void setRoomList(std::vector<room> roomList);
+
+    user findUserByUsername(const QString &username);
 
 signals:
     void connected();
@@ -65,6 +107,7 @@ private:
     int _port;
     user clientUser;
     std::vector<user> onlineUser;
+    std::vector<room> roomList;
 };
 
 #endif // TCPCLIENT_H

@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include <QPushButton>
 #include <iostream>
+#include <QLineEdit>
 
 mainmenulogin::mainmenulogin(QWidget *parent)
     : QWidget(parent)
@@ -13,6 +14,8 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     joinRoom = QWidget::findChild<QFrame*>("joinRoom");
     createRoomInput = QWidget::findChild<QLineEdit*>("roomNameInput");
     joinRoomInput = QWidget::findChild<QLineEdit*>("joinInput");
+
+    warning_create = QWidget::findChild<QLabel*>("warning_create");
     createRoom->close();
     joinRoom->close();
 
@@ -51,10 +54,16 @@ void mainmenulogin::on_cancel_clicked()
 
 void mainmenulogin::on_create_clicked()
 {
-    std::string roomName = createRoomInput->text().toStdString();
-    std::cout << roomName << std::endl;
-    Game_Screen *room = new Game_Screen();
-    room->show();
+    QString roomName = createRoomInput->text();
+    qDebug() << roomName << "\n";
+
+    user clientUser = client->getUser();
+
+    QJsonObject roomInfo;
+    roomInfo["room name"] = roomName;
+    roomInfo["host user"] = clientUser.username;
+
+    client->sendRequestToServer(RequestType::CREATEROOM, roomInfo);
 }
 
 
@@ -85,5 +94,32 @@ void mainmenulogin::setClient(TcpClient *client){
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     qDebug() << responseData << "\n";
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
+    if(jsonResponse["type"] == static_cast<int>(RespondType::CREATEROOM)){
+        if(jsonResponse["message"] == "room created"){
+            // user host_user = client->findUserByUsername(jsonResponse["host name"].toString());
+            player *playerX = new player();
+            playerX->username = jsonResponse["host name"].toString();
+            playerX->turn = 1;
+            playerX->PIECETYPE = 'X';
+
+            room newRoom = room(jsonResponse["room name"].toString());
+            newRoom.addPlayer(*playerX);
+
+            std::vector<room> roomList = client->getRoomList();
+            roomList.push_back(newRoom);
+            // qDebug() << "Room list size: " << roomList.size() << "\n";
+            client->setRoomList(roomList);
+
+            warning_create->setText("");
+            qDebug() << "Room list size: " << client->getRoomList().size() << "\n";
+
+
+        }else if(jsonResponse["message"] == "created fail"){
+            warning_create->setText("Room name is existed");
+        }else if(jsonResponse["message"] == "update room list"){
+            qDebug() << "list room size " << client->getRoomList().size();
+        }
+    }
 }
 

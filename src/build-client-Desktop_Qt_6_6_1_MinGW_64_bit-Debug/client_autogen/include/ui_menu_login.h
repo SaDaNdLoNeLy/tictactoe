@@ -34,6 +34,7 @@ public:
     QLineEdit *roomNameInput;
     QPushButton *cancel;
     QPushButton *create;
+    QLabel *warning_create;
     QFrame *joinRoom;
     QLabel *label_3;
     QLineEdit *joinInput;
@@ -156,13 +157,21 @@ public:
         roomNameInput->setGeometry(QRect(30, 50, 350, 30));
         cancel = new QPushButton(createRoom);
         cancel->setObjectName("cancel");
-        cancel->setGeometry(QRect(30, 90, 150, 30));
+        cancel->setGeometry(QRect(30, 110, 150, 30));
         create = new QPushButton(createRoom);
         create->setObjectName("create");
-        create->setGeometry(QRect(230, 90, 150, 30));
+        create->setGeometry(QRect(230, 110, 150, 30));
+        warning_create = new QLabel(createRoom);
+        warning_create->setObjectName("warning_create");
+        warning_create->setGeometry(QRect(30, 80, 351, 21));
+        QFont font2;
+        font2.setBold(true);
+        warning_create->setFont(font2);
+        warning_create->setStyleSheet(QString::fromUtf8("color: red;\n"
+"font-size: 15px;"));
         joinRoom = new QFrame(mainmenulogin);
         joinRoom->setObjectName("joinRoom");
-        joinRoom->setGeometry(QRect(170, 180, 400, 150));
+        joinRoom->setGeometry(QRect(170, 20, 400, 150));
         joinRoom->setFrameShape(QFrame::StyledPanel);
         joinRoom->setFrameShadow(QFrame::Raised);
         label_3 = new QLabel(joinRoom);
@@ -194,6 +203,7 @@ public:
         label->setText(QCoreApplication::translate("mainmenulogin", "Insert room name to create", nullptr));
         cancel->setText(QCoreApplication::translate("mainmenulogin", "Cancel", nullptr));
         create->setText(QCoreApplication::translate("mainmenulogin", "Create", nullptr));
+        warning_create->setText(QString());
         label_3->setText(QCoreApplication::translate("mainmenulogin", "Insert room name to join", nullptr));
         cancel_3->setText(QCoreApplication::translate("mainmenulogin", "Cancel", nullptr));
         join->setText(QCoreApplication::translate("mainmenulogin", "Join", nullptr));

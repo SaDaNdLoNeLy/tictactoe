@@ -65,12 +65,35 @@ void TcpClient::setUser(QString username, QString status, int wins, int loses, b
     this->clientUser.isFree = isFree;
     this->clientUser.winRate = winRate;
     this->clientUser.elo = elo;
-    qDebug() << this->clientUser.username << "\n";
+    // qDebug() << this->clientUser.username << "\n";
 }
 
 std::vector<user> TcpClient::getOnlineUser(){
     return onlineUser;
 }
+
 void TcpClient::setOnlineUser(std::vector<user> onlineUser){
     this->onlineUser = onlineUser;
+}
+
+std::vector<room> TcpClient::getRoomList(){
+    return roomList;
+}
+
+void TcpClient::setRoomList(std::vector<room> roomList){
+    this->roomList = roomList;
+}
+
+user TcpClient::findUserByUsername(const QString& username){
+    for(const user &user : onlineUser){
+        if(user.username == username){
+            return user;
+        }
+    }
+
+    return user();
+}
+
+void TcpClient::setUserfromUser(user newUpdate){
+    this->clientUser = newUpdate;
 }

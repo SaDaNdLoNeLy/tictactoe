@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QFrame>
+#include "TcpClient.h"
 #include "move.h"
 
 namespace Ui {
@@ -22,9 +23,13 @@ public:
     void setUpGrid();
     void setUpRandomFrame();
 
+    void setClient(TcpClient *client);
+
+
 public slots:
     void itemClicked();
     void randomButtonClicked();
+    void handleServerResponse(const QByteArray& responseData);
 
 private:
     Ui::Game_Screen *ui;
@@ -36,6 +41,8 @@ private:
     QPushButton *randomButton[10];
 
     QPushButton *createButton(QString&, const QString/*const char**/);
+
+    TcpClient *client;
 
 
 };

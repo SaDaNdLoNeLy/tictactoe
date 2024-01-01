@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QLabel>
 #include "TcpClient.h"
 #include "game_screen.h"
 
@@ -46,6 +47,8 @@ private:
     QFrame *joinRoom;
     QLineEdit *createRoomInput;
     QLineEdit *joinRoomInput;
+    QLabel *warning_create;
+    QLabel *warning_join;
 
     TcpClient *client;
 

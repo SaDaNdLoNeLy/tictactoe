@@ -12,13 +12,22 @@ Game_Screen::Game_Screen(QWidget *parent)
     noti->setVisible(false);
 
     setUpGrid();
-    setUpRandomFrame();
+    // setUpRandomFrame();
 
 }
 
 Game_Screen::~Game_Screen()
 {
     delete ui;
+}
+
+void Game_Screen::setClient(TcpClient *client){
+    this->client = client;
+    connect(client, &TcpClient::dataReady, this, &Game_Screen::handleServerResponse);
+}
+
+void Game_Screen::handleServerResponse(const QByteArray& responseData){
+    qDebug() << responseData << "\n";
 }
 
 void Game_Screen::setUpGrid(){

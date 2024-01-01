@@ -125,12 +125,13 @@ void loginform::handleServerResponse(const QByteArray& responseData){
         }else{
             warning_password->setText("This account is not existed");
         }
-    }else if(jsonObject["type"] == static_cast<int>(RespondType::ONLINEPLAYER)){
+    }else if(jsonObject["type"] == static_cast<int>(RespondType::GETDATA)){
         // qDebug() << jsonObject << "\n";
         std::vector<user> onlineUsers;
-        if(jsonObject["message"] == "online users"){
+        std::vector<room> roomList;
+        if(jsonObject["message"] == "get data"){
             QJsonArray usersArray = jsonObject["online users"].toArray();
-
+            QJsonArray roomsArray = jsonObject["room list"].toArray();
             for(auto userValue : usersArray){
                 QJsonObject userObject = userValue.toObject();
 
@@ -145,8 +146,30 @@ void loginform::handleServerResponse(const QByteArray& responseData){
 
                 onlineUsers.push_back(currentUser);
             }
-            qDebug() << "size: " << onlineUsers.size() << "\n";
+
+            for(auto roomValue : roomsArray){
+                QJsonObject roomObject = roomValue.toObject();
+
+                room currentRoom = room(roomObject["name"].toString());
+                player *playerX = new player();
+                playerX->username = roomObject["player 1"].toString();
+                playerX->turn = 1;
+                playerX->PIECETYPE = 'X';
+                currentRoom.addPlayer(*playerX);
+
+                if(roomObject["player 2"].toBool()){
+                    player *playerO = new player();
+                    playerO->username = roomObject["player 2"].toString();
+                    playerO->turn = -1;
+                    playerO->PIECETYPE = 'O';
+                }
+
+                roomList.push_back(currentRoom);
+            }
+            // qDebug() << "size: " << onlineUsers.size() << "\n";
+            // qDebug() << "size room list: " << roomList.size() << "\n";
             tcpClient->setOnlineUser(onlineUsers);
+            tcpClient->setRoomList(roomList);
         }
     }
 }
