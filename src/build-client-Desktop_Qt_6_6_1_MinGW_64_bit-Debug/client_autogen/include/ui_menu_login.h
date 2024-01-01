@@ -40,6 +40,7 @@ public:
     QLineEdit *joinInput;
     QPushButton *cancel_3;
     QPushButton *join;
+    QLabel *warning_join;
 
     void setupUi(QWidget *mainmenulogin)
     {
@@ -168,7 +169,7 @@ public:
         font2.setBold(true);
         warning_create->setFont(font2);
         warning_create->setStyleSheet(QString::fromUtf8("color: red;\n"
-"font-size: 15px;"));
+"font-size: 12px;"));
         joinRoom = new QFrame(mainmenulogin);
         joinRoom->setObjectName("joinRoom");
         joinRoom->setGeometry(QRect(170, 180, 400, 150));
@@ -182,10 +183,16 @@ public:
         joinInput->setGeometry(QRect(30, 50, 350, 30));
         cancel_3 = new QPushButton(joinRoom);
         cancel_3->setObjectName("cancel_3");
-        cancel_3->setGeometry(QRect(30, 90, 150, 30));
+        cancel_3->setGeometry(QRect(30, 110, 150, 30));
         join = new QPushButton(joinRoom);
         join->setObjectName("join");
-        join->setGeometry(QRect(230, 90, 150, 30));
+        join->setGeometry(QRect(230, 110, 150, 30));
+        warning_join = new QLabel(joinRoom);
+        warning_join->setObjectName("warning_join");
+        warning_join->setGeometry(QRect(30, 80, 351, 21));
+        warning_join->setFont(font2);
+        warning_join->setStyleSheet(QString::fromUtf8("font-size: 12px;\n"
+"color: red;"));
 
         retranslateUi(mainmenulogin);
 
@@ -207,6 +214,7 @@ public:
         label_3->setText(QCoreApplication::translate("mainmenulogin", "Insert room name to join", nullptr));
         cancel_3->setText(QCoreApplication::translate("mainmenulogin", "Cancel", nullptr));
         join->setText(QCoreApplication::translate("mainmenulogin", "Join", nullptr));
+        warning_join->setText(QString());
     } // retranslateUi
 
 };
