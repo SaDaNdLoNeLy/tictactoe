@@ -157,18 +157,11 @@ void loginform::handleServerResponse(const QByteArray& responseData){
                 roomValue.roomName = roomObject["room name"].toString();
                 roomValue.playerX = tcpClient->findUserByUsername(roomObject["player X username"].toString());
                 qDebug() << "player X username: " << roomValue.playerX.username << "\n";
-                if(roomObject.contains("player O username")){
-                    roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
-                    qDebug() << "player O username: " << roomValue.playerO.username << "\n";
-                }
+                roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
+                qDebug() << "player O username: " << roomValue.playerO.username << "\n";
                 roomValue.isFull = roomObject["is full"].toBool();
                 list.push_back(roomValue);
             }
         }
-
-        tcpClient->setOnlineUser(online);
-        tcpClient->setRoomList(list);
-        qDebug() << "online user list: " << tcpClient->getOnlineUser().size();
-        qDebug() << "room list: " << tcpClient->getRoomList().size();
     }
 }

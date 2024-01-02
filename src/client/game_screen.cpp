@@ -1,4 +1,5 @@
 #include "game_screen.h"
+#include "qjsondocument.h"
 #include "ui_game_screen.h"
 #include <QLabel>
 #include <iostream>
@@ -27,7 +28,8 @@ void Game_Screen::setClient(TcpClient *client){
 }
 
 void Game_Screen::handleServerResponse(const QByteArray& responseData){
-    // qDebug() << responseData << "\n";
+    QJsonDocument responseJson = QJsonDocument::fromJson(responseData);
+    qDebug() << "response in game screen: " << responseJson;
 }
 
 void Game_Screen::setUpGrid(){
