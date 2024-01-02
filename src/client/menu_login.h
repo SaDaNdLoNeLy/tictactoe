@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include "TcpClient.h"
+#include <QTimer>
 #include "game_screen.h"
 
 namespace Ui {
@@ -49,6 +50,7 @@ private:
     QLineEdit *joinRoomInput;
     QLabel *warning_create;
     QLabel *warning_join;
+    QTimer *timer;
 
     TcpClient *client;
 

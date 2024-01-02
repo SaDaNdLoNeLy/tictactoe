@@ -1,6 +1,7 @@
 D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/EWIEGA46WW/moc_menu_login.cpp: D:/Code/Network-Programming/project/tictactoe/src/client/menu_login.h \
   D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/moc_predefs.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/QObject \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/q20type_traits.h \
@@ -14,6 +15,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qatomic.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qatomic_cxx11.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbasicatomic.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qbasictimer.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbindingstorage.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbytearray.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qbytearrayalgorithms.h \
@@ -100,6 +102,7 @@ D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtdeprecationmarkers.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtextstream.h \
+  C:/Qt/6.6.1/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtnoop.h \
   C:/Qt/6.6.1/mingw_64/include/QtCore/qtpreprocessorsupport.h \

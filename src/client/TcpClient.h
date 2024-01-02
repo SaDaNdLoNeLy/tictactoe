@@ -9,7 +9,7 @@ enum class RequestType
     LOGIN,
     LOGOUT,
     REGISTER,
-    GETDATA,
+    UPDATEDATA,
     CREATEROOM,
     JOINROOM,
     ROOMLIST,
@@ -21,7 +21,7 @@ enum class RespondType
     LOGIN,
     LOGOUT,
     REGISTER,
-    GETDATA,
+    UPDATEDATA,
     CREATEROOM,
     JOINROOM,
     ROOMLIST,
@@ -37,15 +37,9 @@ struct user{
     double winRate;
 };
 
-struct player{
-    QString username;
-    int turn;
-    QChar PIECETYPE;
-};
-
 struct room{
     QString roomName;
-    std::vector<player> players;
+    std::vector<user> players;
     int turn;
     bool isFull;
 
@@ -55,7 +49,7 @@ struct room{
         return players.size() < 2;
     }
 
-    bool addPlayer(const player& newUser){
+    bool addPlayer(const user& newUser){
         if(hasSpace()){
             players.push_back(newUser);
             if(players.size() == 2){

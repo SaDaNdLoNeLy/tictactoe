@@ -100,76 +100,35 @@ void loginform::on_login_btn_clicked()
 
 void loginform::handleServerResponse(const QByteArray& responseData){
     // qDebug() << responseData << "\n";
-    QJsonDocument jsonObject = QJsonDocument::fromJson(responseData);
-    if(jsonObject["type"] == static_cast<int>(RespondType::LOGIN)){
-        if(jsonObject["message"] == "fail"){
-            warning_password->setText("Wrong username or password. Try again!");
-        }else if(jsonObject["message"] == "already login"){
-            warning_password->setText("This account has been logged in another device");
-        }else if(jsonObject["message"] == "success"){
-            warning_password->setText("");
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
+    // qDebug() << jsonResponse << "\n";
+    if(jsonResponse["type"] == static_cast<int>(RespondType::LOGIN)){
+        if(jsonResponse["message"] == "login success"){
+            warning_username->setText("");
+            QJsonObject data;
+            tcpClient->sendRequestToServer(RequestType::UPDATEDATA, data);
 
-            QString username = jsonObject["user"]["username"].toString();
-            QString status = jsonObject["user"]["status"].toString();
-            int wins = jsonObject["user"]["wins"].toInt();
-            int loses = jsonObject["user"]["loses"].toInt();
-            bool isFree = jsonObject["user"]["isFree"].toBool();
-            double winRate = jsonObject["user"]["winRate"].toDouble();
-            int elo = jsonObject["user"]["elo"].toInt();
+            QString username = jsonResponse["user"]["username"].toString();
+            QString status = jsonResponse["user"]["status"].toString();
+            int wins = jsonResponse["user"]["wins"].toInt();
+            int loses = jsonResponse["user"]["loses"].toInt();
+            bool isFree = jsonResponse["user"]["isFree"].toBool();
+            double winRate = jsonResponse["user"]["winRate"].toDouble();
+            int elo = jsonResponse["user"]["elo"].toInt();
             tcpClient->setUser(username, status, wins, loses, isFree, winRate, elo);
 
+            mainmenulogin *menu_login = new mainmenulogin();
+            menu_login->setClient(tcpClient);
+            menu_login->show();
             this->hide();
-            mainmenulogin *menu = new mainmenulogin();
-            menu->setClient(tcpClient);
-            menu->show();
-        }else{
-            warning_password->setText("This account is not existed");
+        }else if(jsonResponse["message"] == "already login"){
+            warning_username->setText("This account has been signed in another device");
+        }else if(jsonResponse["message"] == "login fail"){
+            warning_username->setText("Wrong username or password. Try again!");
+        }else if(jsonResponse["message"] == "not existed"){
+            warning_username->setText("This account is not existed");
         }
-    }else if(jsonObject["type"] == static_cast<int>(RespondType::GETDATA)){
-        // qDebug() << jsonObject << "\n";
-        std::vector<user> onlineUsers;
-        std::vector<room> roomList;
-        if(jsonObject["message"] == "get data"){
-            QJsonArray usersArray = jsonObject["online users"].toArray();
-            QJsonArray roomsArray = jsonObject["room list"].toArray();
-            for(auto userValue : usersArray){
-                QJsonObject userObject = userValue.toObject();
-
-                user currentUser;
-                currentUser.elo = userObject["elo"].toInt();
-                currentUser.isFree = userObject["isFree"].toBool();
-                currentUser.loses = userObject["loses"].toInt();
-                currentUser.status = userObject["status"].toString();
-                currentUser.username = userObject["username"].toString();
-                currentUser.winRate = userObject["winRate"].toDouble();
-                currentUser.wins = userObject["wins"].toInt();
-
-                onlineUsers.push_back(currentUser);
-            }
-
-            for(auto roomValue : roomsArray){
-                QJsonObject roomObject = roomValue.toObject();
-
-                room currentRoom = room(roomObject["name"].toString());
-                player *playerX = new player();
-                playerX->username = roomObject["player 1"].toString();
-                playerX->turn = 1;
-                playerX->PIECETYPE = 'X';
-                currentRoom.addPlayer(*playerX);
-
-                if(roomObject["player 2"].toBool()){
-                    player *playerO = new player();
-                    playerO->username = roomObject["player 2"].toString();
-                    playerO->turn = -1;
-                    playerO->PIECETYPE = 'O';
-                }
-
-                roomList.push_back(currentRoom);
-            }
-            // qDebug() << "size: " << onlineUsers.size() << "\n";
-            // qDebug() << "size room list: " << roomList.size() << "\n";
-            tcpClient->setOnlineUser(onlineUsers);
-            tcpClient->setRoomList(roomList);
-        }
+    }else if(jsonResponse["type"] == static_cast<int>(RespondType::UPDATEDATA)){
+        qDebug() << "Response from update request: " << jsonResponse << "\n";
     }
 }

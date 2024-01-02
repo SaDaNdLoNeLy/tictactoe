@@ -127,6 +127,8 @@ void registerform::handleServerResponse(const QByteArray& responseData){
     QJsonDocument response = QJsonDocument::fromJson(responseData);
     if(response["type"] == static_cast<int>(RespondType::REGISTER)){
         if(response["message"] == "register successfully"){
+            QJsonObject data;
+            // client->sendRequestToServer(RequestType::UPDATEDATA, data);
             loginform *loginUI = new loginform();
             loginUI->setTcpClient(client);
             loginUI->show();
