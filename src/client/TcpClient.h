@@ -39,26 +39,11 @@ struct user{
 
 struct room{
     QString roomName;
-    std::vector<user> players;
-    int turn;
+    user playerX;
+    user playerO;
     bool isFull;
-
-    room(QString name) : roomName(name), isFull(false){}
-
-    bool hasSpace() const{
-        return players.size() < 2;
-    }
-
-    bool addPlayer(const user& newUser){
-        if(hasSpace()){
-            players.push_back(newUser);
-            if(players.size() == 2){
-                isFull = true;
-            }
-            return true;
-        }
-        return false;
-    }
+    bool isPlayerXTurn;
+    room() : isPlayerXTurn(true){}
 };
 
 class TcpClient : public QObject

@@ -27,7 +27,7 @@ void Game_Screen::setClient(TcpClient *client){
 }
 
 void Game_Screen::handleServerResponse(const QByteArray& responseData){
-    qDebug() << responseData << "\n";
+    // qDebug() << responseData << "\n";
 }
 
 void Game_Screen::setUpGrid(){

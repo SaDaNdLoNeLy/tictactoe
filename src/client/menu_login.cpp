@@ -38,8 +38,7 @@ void mainmenulogin::on_logout_clicked()
     client->disconnectFromDevice();
     MainWindow *mainwindow = new MainWindow();
     mainwindow->show();
-
-    this->close();
+    this->hide();
 }
 
 
@@ -58,6 +57,10 @@ void mainmenulogin::on_cancel_clicked()
 void mainmenulogin::on_create_clicked()
 {
     QString roomName = createRoomInput->text();
+    QJsonObject roomData;
+    roomData["room name"] = roomName;
+    roomData["player X username"] = client->getUser().username;
+    client->sendRequestToServer(RequestType::CREATEROOM, roomData);
 }
 
 
@@ -76,18 +79,10 @@ void mainmenulogin::on_cancel_3_clicked()
 void mainmenulogin::on_join_clicked()
 {
     QString roomName = joinRoomInput->text();
-    // std::cout << roomName << std::endl;
-    // Game_Screen *room = new Game_Screen();
-    // room->show();
-
-    // user clientUser = client->getUser();
-
-    // QJsonObject roomInfo;
-    // roomInfo["room name"] = roomName;
-    // roomInfo["player 2"] = clientUser.username;
-
-    // client->sendRequestToServer(RequestType::JOINROOM, roomInfo);
-
+    QJsonObject roomData;
+    roomData["room name"] = roomName;
+    roomData["player O username"] = client->getUser().username;
+    client->sendRequestToServer(RequestType::JOINROOM, roomData);
 }
 
 void mainmenulogin::setClient(TcpClient *client){
@@ -97,6 +92,29 @@ void mainmenulogin::setClient(TcpClient *client){
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
-    qDebug() << "Response from menu login: " << jsonResponse << "\n";
+    // qDebug() << "Response from menu login: " << jsonResponse << "\n";
+    if(jsonResponse["type"] == static_cast<int>(RespondType::CREATEROOM)){
+        if(jsonResponse["message"] == "create success"){
+            warning_create->setText("");
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
+        }else if(jsonResponse["type"] == "create fail"){
+            warning_create->setText("This room name is existed");
+        }
+    }else if(jsonResponse["type"] == static_cast<int>(RespondType::JOINROOM)){
+        if(jsonResponse["message"] == "join success"){
+            warning_join->setText("");
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
+        }else if(jsonResponse["message"] == "full"){
+            warning_join->setText("This room is full");
+        }else if(jsonResponse["message"] == "join fail"){
+            warning_join->setText("This room is now existed");
+        }
+    }
 }
 

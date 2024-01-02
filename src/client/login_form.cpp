@@ -129,6 +129,46 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             warning_username->setText("This account is not existed");
         }
     }else if(jsonResponse["type"] == static_cast<int>(RespondType::UPDATEDATA)){
-        qDebug() << "Response from update request: " << jsonResponse << "\n";
+        QJsonArray onlinePlayer = jsonResponse["online user"].toArray();
+        QJsonArray roomList = jsonResponse["room list"].toArray();
+
+        std::vector<user> online;
+        std::vector<room> list;
+
+        for(const QJsonValue &value : onlinePlayer){
+            QJsonObject userObject = value.toObject();
+
+            user userValue;
+            userValue.username = userObject["username"].toString();
+            userValue.elo = userObject["elo"].toInt();
+            userValue.isFree = userObject["isFree"].toBool();
+            userValue.loses = userObject["losses"].toInt();
+            userValue.status = userObject["status"].toString();
+            userValue.winRate = userObject["win rate"].toDouble();
+            userValue.wins = userObject["wins"].toInt();
+            online.push_back(userValue);
+        }
+
+        if(!jsonResponse["room list"].isNull()){
+            for(const QJsonValue &value : roomList){
+                QJsonObject roomObject = value.toObject();
+
+                room roomValue;
+                roomValue.roomName = roomObject["room name"].toString();
+                roomValue.playerX = tcpClient->findUserByUsername(roomObject["player X username"].toString());
+                qDebug() << "player X username: " << roomValue.playerX.username << "\n";
+                if(roomObject.contains("player O username")){
+                    roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
+                    qDebug() << "player O username: " << roomValue.playerO.username << "\n";
+                }
+                roomValue.isFull = roomObject["is full"].toBool();
+                list.push_back(roomValue);
+            }
+        }
+
+        tcpClient->setOnlineUser(online);
+        tcpClient->setRoomList(list);
+        qDebug() << "online user list: " << tcpClient->getOnlineUser().size();
+        qDebug() << "room list: " << tcpClient->getRoomList().size();
     }
 }
