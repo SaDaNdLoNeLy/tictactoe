@@ -135,13 +135,11 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
         // qDebug() << jsonResponse << "\n";
         if(jsonResponse["message"] == "joined success"){
             warning_join->setText("");
-            Game_Screen *room_screen = new Game_Screen();
-            room_screen->setClient(client);
-            room_screen->show();
-            this->hide();
-        }else if(jsonResponse["message"] == "joined failed"){
-            warning_join->setText("This room is not existed!!");
-        }else if(jsonResponse["message"] == "update room list"){
+            // Game_Screen *room_screen = new Game_Screen();
+            // room_screen->setClient(client);
+            // room_screen->show();
+            // this->hide();
+
             QString player2_username = jsonResponse["player 2"].toString();
             QString room_name = jsonResponse["room name"].toString();
             player *playerO = new player();
@@ -158,6 +156,13 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
             client->setRoomList(roomList);
             qDebug() << "Room list after join: " << client->getRoomList().size() << "\n";
 
+        }else if(jsonResponse["message"] == "joined failed"){
+            warning_join->setText("This room is not existed!!");
+        }else if(jsonResponse["message"] == "open room"){
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
         }
     }
 }
