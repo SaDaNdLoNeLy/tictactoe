@@ -148,6 +148,7 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             userValue.wins = userObject["wins"].toInt();
             online.push_back(userValue);
         }
+        tcpClient->setOnlineUser(online);
 
         if(!jsonResponse["room list"].isNull()){
             for(const QJsonValue &value : roomList){
@@ -156,12 +157,21 @@ void loginform::handleServerResponse(const QByteArray& responseData){
                 room roomValue;
                 roomValue.roomName = roomObject["room name"].toString();
                 roomValue.playerX = tcpClient->findUserByUsername(roomObject["player X username"].toString());
-                qDebug() << "player X username: " << roomValue.playerX.username << "\n";
-                roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
-                qDebug() << "player O username: " << roomValue.playerO.username << "\n";
+                // qDebug() << "player X username: " << roomValue.playerX.username << "\n";
+                if(roomObject.contains("player O username")){
+                    roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
+                    // qDebug() << "player O username: " << roomValue.playerO.username << "\n";
+                }
+                // roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
+                // qDebug() << "player O username: " << roomValue.playerO.username << "\n";
                 roomValue.isFull = roomObject["is full"].toBool();
+                roomValue.player1_ready = roomObject["player1_ready"].toBool();
+                roomValue.player2_ready = roomObject["player2_ready"].toBool();
                 list.push_back(roomValue);
             }
         }
+        tcpClient->setRoomList(list);
+        tcpClient->setRoomIn4(tcpClient->findRoomByRoomName(tcpClient->getRoomName()));
+
     }
 }

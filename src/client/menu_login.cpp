@@ -96,6 +96,7 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     if(jsonResponse["type"] == static_cast<int>(RespondType::CREATEROOM)){
         if(jsonResponse["message"] == "create success"){
             warning_create->setText("");
+            client->setRoomName(jsonResponse["room name"].toString());
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
             room_screen->show();
@@ -106,6 +107,7 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     }else if(jsonResponse["type"] == static_cast<int>(RespondType::JOINROOM)){
         if(jsonResponse["message"] == "join success"){
             warning_join->setText("");
+            client->setRoomName(jsonResponse["room name"].toString());
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
             room_screen->show();

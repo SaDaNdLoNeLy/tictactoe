@@ -461,7 +461,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Elo</string>
+      <string>Elo: </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -499,7 +499,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Win: 384 - 52%</string>
+      <string>Win: </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -524,6 +524,19 @@
       <string>Time:</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="readyButton">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>390</y>
+       <width>130</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>READY</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="notification">
     <property name="geometry">
@@ -546,55 +559,6 @@
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
-   </widget>
-   <widget class="QFrame" name="randomFrame">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>150</y>
-      <width>460</width>
-      <height>140</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>40</y>
-       <width>271</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="randomGridLayout"/>
-    </widget>
-    <widget class="QLabel" name="textRandom">
-     <property name="geometry">
-      <rect>
-       <x>92</x>
-       <y>10</y>
-       <width>271</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>11</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Pick a number you want: </string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
    </widget>
   </widget>
  </widget>

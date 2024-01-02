@@ -65,11 +65,8 @@ public:
     QLabel *name_2;
     QLabel *win_2;
     QLabel *timer;
+    QPushButton *readyButton;
     QLabel *notification;
-    QFrame *randomFrame;
-    QWidget *gridLayoutWidget;
-    QGridLayout *randomGridLayout;
-    QLabel *textRandom;
 
     void setupUi(QMainWindow *Game_Screen)
     {
@@ -370,31 +367,15 @@ public:
         timer->setObjectName("timer");
         timer->setGeometry(QRect(0, 20, 161, 31));
         timer->setFont(font2);
+        readyButton = new QPushButton(player2);
+        readyButton->setObjectName("readyButton");
+        readyButton->setGeometry(QRect(15, 390, 130, 41));
         notification = new QLabel(centralwidget);
         notification->setObjectName("notification");
         notification->setGeometry(QRect(260, 180, 200, 80));
         notification->setStyleSheet(QString::fromUtf8(""));
         notification->setScaledContents(true);
         notification->setAlignment(Qt::AlignCenter);
-        randomFrame = new QFrame(centralwidget);
-        randomFrame->setObjectName("randomFrame");
-        randomFrame->setGeometry(QRect(130, 150, 460, 140));
-        randomFrame->setFrameShape(QFrame::StyledPanel);
-        randomFrame->setFrameShadow(QFrame::Raised);
-        gridLayoutWidget = new QWidget(randomFrame);
-        gridLayoutWidget->setObjectName("gridLayoutWidget");
-        gridLayoutWidget->setGeometry(QRect(90, 40, 271, 81));
-        randomGridLayout = new QGridLayout(gridLayoutWidget);
-        randomGridLayout->setObjectName("randomGridLayout");
-        randomGridLayout->setContentsMargins(0, 0, 0, 0);
-        textRandom = new QLabel(randomFrame);
-        textRandom->setObjectName("textRandom");
-        textRandom->setGeometry(QRect(92, 10, 271, 21));
-        QFont font3;
-        font3.setPointSize(11);
-        font3.setBold(true);
-        textRandom->setFont(font3);
-        textRandom->setAlignment(Qt::AlignCenter);
         Game_Screen->setCentralWidget(centralwidget);
 
         retranslateUi(Game_Screen);
@@ -415,12 +396,12 @@ public:
         name->setText(QCoreApplication::translate("Game_Screen", "Name", nullptr));
         win->setText(QCoreApplication::translate("Game_Screen", "Win: 384 - 52%", nullptr));
         avatar_2->setText(QString());
-        elo_2->setText(QCoreApplication::translate("Game_Screen", "Elo", nullptr));
+        elo_2->setText(QCoreApplication::translate("Game_Screen", "Elo: ", nullptr));
         name_2->setText(QCoreApplication::translate("Game_Screen", "Name", nullptr));
-        win_2->setText(QCoreApplication::translate("Game_Screen", "Win: 384 - 52%", nullptr));
+        win_2->setText(QCoreApplication::translate("Game_Screen", "Win: ", nullptr));
         timer->setText(QCoreApplication::translate("Game_Screen", "Time:", nullptr));
+        readyButton->setText(QCoreApplication::translate("Game_Screen", "READY", nullptr));
         notification->setText(QCoreApplication::translate("Game_Screen", "Player 1 Wins !", nullptr));
-        textRandom->setText(QCoreApplication::translate("Game_Screen", "Pick a number you want: ", nullptr));
     } // retranslateUi
 
 };

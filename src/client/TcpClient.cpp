@@ -97,3 +97,29 @@ user TcpClient::findUserByUsername(const QString& username){
 void TcpClient::setUserfromUser(user newUpdate){
     this->clientUser = newUpdate;
 }
+
+QString TcpClient::getRoomName(){
+    return this->room_name;
+}
+
+void TcpClient::setRoomName(QString room_name){
+    this->room_name = room_name;
+}
+
+room TcpClient::getRoomIn4(){
+    return this->roomIn4;
+}
+
+void TcpClient::setRoomIn4(room roomIn4){
+    this->roomIn4 = roomIn4;
+    emit roomIn4Changed(roomIn4);
+}
+
+room TcpClient::findRoomByRoomName(const QString &room_name){
+    for(const room &value : roomList){
+        if(value.roomName == room_name){
+            return value;
+        }
+    }
+    return room();
+}
