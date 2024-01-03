@@ -1,0 +1,27 @@
+{
+	"BUILD_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen",
+	"CMAKE_BINARY_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/client",
+	"CMAKE_SOURCE_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/client",
+	"INCLUDE_DIR" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/client_autogen/include",
+	"INPUTS" : 
+	[
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/hide-password.svg",
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/user-solid.svg",
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/user-regular.svg",
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/show-password.svg",
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/arrow-left-solid.svg",
+		"D:/Code/Network-Programming/project/tictactoe/src/client/Resource/right-from-bracket-solid.svg"
+	],
+	"LOCK_FILE" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/client_autogen.dir/AutoRcc_user_icon_SJ56Y4VZUD_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "user_icon" ],
+	"OUTPUT_CHECKSUM" : "SJ56Y4VZUD",
+	"OUTPUT_NAME" : "qrc_user_icon.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.6.1/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "D:/Code/Network-Programming/project/tictactoe/src/build-client-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/client_autogen.dir/AutoRcc_user_icon_SJ56Y4VZUD_Used.txt",
+	"SOURCE" : "D:/Code/Network-Programming/project/tictactoe/src/client/Resource/user_icon.qrc",
+	"VERBOSITY" : 0
+}

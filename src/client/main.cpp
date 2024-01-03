@@ -1,8 +1,15 @@
+#include "mainwindow.h"
+
+#include <QApplication>
 #include <iostream>
-#include <syslog.h>
+// #include <syslog.h>
+#include "../server/auth.hpp"
 
-#include "./server/auth.hpp"
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
 
-int main(){
-    std::cout << "Hello World" << std::endl;
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

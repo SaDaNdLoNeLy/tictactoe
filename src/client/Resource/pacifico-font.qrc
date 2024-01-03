@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Pacifico-Regular.ttf</file>
+    </qresource>
+    <qresource prefix="/res"/>
+</RCC>
