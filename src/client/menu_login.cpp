@@ -92,18 +92,17 @@ void mainmenulogin::setClient(TcpClient *client){
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
-    qDebug() << "Response from menu login: " << jsonResponse << "\n";
+    // qDebug() << "Response from menu login: " << jsonResponse << "\n";
     if(jsonResponse["type"] == static_cast<int>(ResponseType::CREATEROOM)){
         if(jsonResponse["message"] == "create success"){
             warning_create->setText("");
             client->setRoomName(jsonResponse["room infor"]["room name"].toString());
-            room newRoom;
-            newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
-            newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
-            std::vector<room> roomList = client->getRoomList();
-            roomList.push_back(newRoom);
-            client->setRoomList(roomList);
-            qDebug() << "room list: " << client->getRoomList().size();
+            // room newRoom;
+            // newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
+            // newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
+            // std::vector<room> roomList = client->getRoomList();
+            // roomList.push_back(newRoom);
+            // client->setRoomList(roomList);
 
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
@@ -116,6 +115,15 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
         if(jsonResponse["message"] == "join success"){
             warning_join->setText("");
             client->setRoomName(jsonResponse["room name"].toString());
+            // std::vector<room> roomList = client->getRoomList();
+            // for(room &value : roomList){
+            //     if(value.roomName == client->getRoomName()){
+            //         value.playerO = client->findUserByUsername(jsonResponse["user name"].toString());
+            //         value.isFull = true;
+            //     }
+            // }
+            // client->setRoomList(roomList);
+
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
             room_screen->show();
@@ -126,17 +134,32 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
             warning_join->setText("This room is now existed");
         }
     }else if(jsonResponse["type"] == static_cast<int>(ResponseType::UPDATEROOMLIST)){
-        if(jsonResponse["message"] == "add to room list"){
+        if(jsonResponse["message"] == "create room"){
             room newRoom;
             newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
             newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
-
             std::vector<room> roomList;
             roomList.push_back(newRoom);
             client->setRoomList(roomList);
-            client->setRoomIn4(client->findRoomByRoomName(client->getRoomName()));
-            qDebug() << "size room list: " << client->getRoomIn4().roomName << "\n";
+
+            if(client->getUser().username == newRoom.playerX.username){
+                client->setRoomIn4(newRoom);
+            }
+        }else if(jsonResponse["message"] == "join room"){
+            std::vector<room> roomList = client->getRoomList();
+            for(room &value : roomList){
+                if(value.roomName == jsonResponse["room name"].toString()){
+                    value.playerO = client->findUserByUsername(jsonResponse["user name"].toString());
+                    value.isFull = true;
+                }
+            }
+            client->setRoomList(roomList);
+            room foundRoom = client->findRoomByRoomName(jsonResponse["room name"].toString());
+            if(client->getUser().username == foundRoom.playerX.username || client->getUser().username == foundRoom.playerO.username){
+                client->setRoomIn4(foundRoom);
+            }
         }
     }
+
 }
 
