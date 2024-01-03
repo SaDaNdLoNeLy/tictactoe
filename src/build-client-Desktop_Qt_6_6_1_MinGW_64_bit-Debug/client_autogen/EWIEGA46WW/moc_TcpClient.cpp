@@ -52,11 +52,12 @@ static constexpr auto qt_meta_stringdata_CLASSTcpClientENDCLASS = QtMocHelpers::
     "roomIn4Changed",
     "room",
     "newRoomInfo",
-    "onReadyRead"
+    "onReadyRead",
+    "onDisconnected"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSTcpClientENDCLASS_t {
-    uint offsetsAndSizes[30];
+    uint offsetsAndSizes[32];
     char stringdata0[10];
     char stringdata1[10];
     char stringdata2[1];
@@ -72,6 +73,7 @@ struct qt_meta_stringdata_CLASSTcpClientENDCLASS_t {
     char stringdata12[5];
     char stringdata13[12];
     char stringdata14[12];
+    char stringdata15[15];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSTcpClientENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -91,7 +93,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSTcpClientENDCLASS_t qt_meta_str
         QT_MOC_LITERAL(153, 14),  // "roomIn4Changed"
         QT_MOC_LITERAL(168, 4),  // "room"
         QT_MOC_LITERAL(173, 11),  // "newRoomInfo"
-        QT_MOC_LITERAL(185, 11)   // "onReadyRead"
+        QT_MOC_LITERAL(185, 11),  // "onReadyRead"
+        QT_MOC_LITERAL(197, 14)   // "onDisconnected"
     },
     "TcpClient",
     "connected",
@@ -107,7 +110,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSTcpClientENDCLASS_t qt_meta_str
     "roomIn4Changed",
     "room",
     "newRoomInfo",
-    "onReadyRead"
+    "onReadyRead",
+    "onDisconnected"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -119,7 +123,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSTcpClientENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -127,15 +131,16 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSTcpClientENDCLASS[] = {
        6,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   56,    2, 0x06,    1 /* Public */,
-       3,    0,   57,    2, 0x06,    2 /* Public */,
-       4,    1,   58,    2, 0x06,    3 /* Public */,
-       7,    1,   61,    2, 0x06,    5 /* Public */,
-      10,    1,   64,    2, 0x06,    7 /* Public */,
-      11,    1,   67,    2, 0x06,    9 /* Public */,
+       1,    0,   62,    2, 0x06,    1 /* Public */,
+       3,    0,   63,    2, 0x06,    2 /* Public */,
+       4,    1,   64,    2, 0x06,    3 /* Public */,
+       7,    1,   67,    2, 0x06,    5 /* Public */,
+      10,    1,   70,    2, 0x06,    7 /* Public */,
+      11,    1,   73,    2, 0x06,    9 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-      14,    0,   70,    2, 0x08,   11 /* Private */,
+      14,    0,   76,    2, 0x08,   11 /* Private */,
+      15,    0,   77,    2, 0x08,   12 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -146,6 +151,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSTcpClientENDCLASS[] = {
     QMetaType::Void, 0x80000000 | 12,   13,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -177,6 +183,8 @@ Q_CONSTINIT const QMetaObject TcpClient::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<const room &, std::false_type>,
         // method 'onReadyRead'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onDisconnected'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -195,6 +203,7 @@ void TcpClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 4: _t->dataReady((*reinterpret_cast< std::add_pointer_t<QByteArray>>(_a[1]))); break;
         case 5: _t->roomIn4Changed((*reinterpret_cast< std::add_pointer_t<room>>(_a[1]))); break;
         case 6: _t->onReadyRead(); break;
+        case 7: _t->onDisconnected(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -281,13 +290,13 @@ int TcpClient::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

@@ -162,30 +162,35 @@ void Game_Screen::itemClicked() {
     clickedButton->setAutoExclusive(false);
     clickedButton->setChecked(false);
     clickedButton->setAutoExclusive(true);
-    QWidget *parentWidget = clickedButton->parentWidget();
-    QGridLayout *parentLayout = qobject_cast<QGridLayout*>(parentWidget->layout());
-    int nextCellPosition = clickedButton->objectName().toInt();
+    // QWidget *parentWidget = clickedButton->parentWidget();
+    // QGridLayout *parentLayout = qobject_cast<QGridLayout*>(parentWidget->layout());
+    // int nextCellPosition = clickedButton->objectName().toInt();
 
-    int layoutIndex = -1;
-    for (int i = 0; i < 9; ++i) {
-        if (layouts[i] == parentLayout) {
-            layoutIndex = i;
-            break;
-        }
-    }
-
-    // std::cout << nextCellPosition << std::endl;
-
-    for(int i = 0; i < 9; i++){
-        for(int j = 0; j < 9; j++){
-            if(i == nextCellPosition){
-                itemButtons[i][j]->setDisabled(false);
-            }else{
+    if(!client->getRoomIn4().gameStart){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
                 itemButtons[i][j]->setDisabled(true);
             }
-            itemButtons[layoutIndex][nextCellPosition]->setText("X");
         }
     }
+
+    QJsonObject data;
+    data["room name"] = client->getRoomIn4().roomName;
+    data["current board"] = clickedButton->parentWidget()->layout()->objectName();
+    data["current cell"] = clickedButton->objectName();
+    data["player username"] = client->getUser().username;
+    client->sendRequestToServer(RequestType::MOVE, data);
+
+    // for(int i = 0; i < 9; i++){
+    //     for(int j = 0; j < 9; j++){
+    //         if(i == nextCellPosition){
+    //             itemButtons[i][j]->setDisabled(false);
+    //         }else{
+    //             itemButtons[i][j]->setDisabled(true);
+    //         }
+    //         itemButtons[layoutIndex][nextCellPosition]->setText("X");
+    //     }
+    // }
 }
 
 // void Game_Screen::randomButtonClicked(){

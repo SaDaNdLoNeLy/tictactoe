@@ -9,28 +9,36 @@ enum class RequestType
     LOGIN,
     LOGOUT,
     REGISTER,
-    UPDATEDATA,
+    GETROOMLIST,
+    GETONLINEPLAYER,
+    UPDATEONLINELIST,
+    UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
     ROOMLIST,
     READY,
     UNREADY,
     STARTGAME,
+    MOVE,
     // Add more request types as needed
 };
 
-enum class RespondType
+enum class ResponseType
 {
     LOGIN,
     LOGOUT,
     REGISTER,
-    UPDATEDATA,
+    GETROOMLIST,
+    GETONLINEPLAYER,
+    UPDATEONLINELIST,
+    UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
     ROOMLIST,
     READY,
     UNREADY,
     STARTGAME,
+    MOVE,
 };
 
 struct user{
@@ -50,10 +58,14 @@ struct room{
     user playerO;
     bool isFull;
     bool isPlayerXTurn;
-    int turn = -2;
+    bool gameStart;
     bool player1_ready;
     bool player2_ready;
-    room() : isPlayerXTurn(true), player1_ready(false), player2_ready(false){}
+    int turn = -2;
+    int currentBoard;
+    int currentCell;
+    int nextBoard;
+    room() : isFull(false), isPlayerXTurn(true), player1_ready(false), player2_ready(false), gameStart(false), turn(-2), nextBoard(-1){}
 };
 
 class TcpClient : public QObject
@@ -97,6 +109,7 @@ signals:
 
 private slots:
     void onReadyRead();
+    void onDisconnected();
 
 private:
     QTcpSocket _socket;

@@ -127,7 +127,7 @@ void registerform::on_Back_btn_clicked()
 void registerform::handleServerResponse(const QByteArray& responseData){
     // qDebug() << responseData << "\n";
     QJsonDocument response = QJsonDocument::fromJson(responseData);
-    if(response["type"] == static_cast<int>(RespondType::REGISTER)){
+    if(response["type"] == static_cast<int>(ResponseType::REGISTER)){
         if(response["message"] == "register successfully"){
             QJsonObject data;
             // client->sendRequestToServer(RequestType::UPDATEDATA, data);

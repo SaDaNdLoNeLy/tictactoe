@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QTimer>
 #include "register_form.h"
 #include "forgot_password.h"
 #include "TcpClient.h"

@@ -92,11 +92,19 @@ void mainmenulogin::setClient(TcpClient *client){
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
-    // qDebug() << "Response from menu login: " << jsonResponse << "\n";
-    if(jsonResponse["type"] == static_cast<int>(RespondType::CREATEROOM)){
+    qDebug() << "Response from menu login: " << jsonResponse << "\n";
+    if(jsonResponse["type"] == static_cast<int>(ResponseType::CREATEROOM)){
         if(jsonResponse["message"] == "create success"){
             warning_create->setText("");
-            client->setRoomName(jsonResponse["room name"].toString());
+            client->setRoomName(jsonResponse["room infor"]["room name"].toString());
+            room newRoom;
+            newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
+            newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
+            std::vector<room> roomList = client->getRoomList();
+            roomList.push_back(newRoom);
+            client->setRoomList(roomList);
+            qDebug() << "room list: " << client->getRoomList().size();
+
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
             room_screen->show();
@@ -104,7 +112,7 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
         }else if(jsonResponse["type"] == "create fail"){
             warning_create->setText("This room name is existed");
         }
-    }else if(jsonResponse["type"] == static_cast<int>(RespondType::JOINROOM)){
+    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::JOINROOM)){
         if(jsonResponse["message"] == "join success"){
             warning_join->setText("");
             client->setRoomName(jsonResponse["room name"].toString());
@@ -116,6 +124,18 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
             warning_join->setText("This room is full");
         }else if(jsonResponse["message"] == "join fail"){
             warning_join->setText("This room is now existed");
+        }
+    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::UPDATEROOMLIST)){
+        if(jsonResponse["message"] == "add to room list"){
+            room newRoom;
+            newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
+            newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
+
+            std::vector<room> roomList;
+            roomList.push_back(newRoom);
+            client->setRoomList(roomList);
+            client->setRoomIn4(client->findRoomByRoomName(client->getRoomName()));
+            qDebug() << "size room list: " << client->getRoomIn4().roomName << "\n";
         }
     }
 }

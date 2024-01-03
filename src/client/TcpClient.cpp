@@ -7,7 +7,7 @@
 
 TcpClient::TcpClient() {
     connect(&_socket, &QTcpSocket::connected, this, &TcpClient::connected);
-    connect(&_socket, &QTcpSocket::disconnected, this, &TcpClient::disconnected);
+    connect(&_socket, &QTcpSocket::disconnected, this, &TcpClient::onDisconnected);
     connect(&_socket, &QTcpSocket::errorOccurred, this, &TcpClient::errorOccurred);
     connect(&_socket, &QTcpSocket::stateChanged, this, &TcpClient::stateChanged);
     connect(&_socket, &QTcpSocket::readyRead, this, &TcpClient::onReadyRead);
@@ -32,6 +32,17 @@ QTcpSocket& TcpClient::getSocket(){
 void TcpClient::onReadyRead(){
     auto data = _socket.readAll();
     emit dataReady(data);
+}
+
+void TcpClient::onDisconnected(){
+    QJsonObject logoutMessage;
+    logoutMessage["type"] = static_cast<int>(RequestType::LOGOUT);
+    logoutMessage["username"] = clientUser.username;
+
+    QJsonDocument doc(logoutMessage);
+    QByteArray jsonData = doc.toJson();
+
+    _socket.write(jsonData);
 }
 
 QByteArray TcpClient::getServerResponse(){
