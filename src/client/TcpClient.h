@@ -36,6 +36,7 @@ enum class RespondType
 struct user{
     QString username;
     QString status;
+    QString ingame;
     int wins;
     int loses;
     int elo;
@@ -68,7 +69,7 @@ public:
     QTcpSocket& getSocket();
 
     user getUser();
-    void setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo);
+    void setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo, QString ingame);
     void setUserfromUser(user newUpdate);
 
     std::vector<user> getOnlineUser();

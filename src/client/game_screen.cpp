@@ -38,9 +38,15 @@ void Game_Screen::setClient(TcpClient *client){
 }
 
 void Game_Screen::handleRoomIn4Changed(const room& newRoom){
-    player1_name->setText(client->getRoomIn4().playerX.username);
+    player1_name->setText(client->getRoomIn4().playerX.ingame);
     player1_elo->setText("Elo: " + QString::number(client->getRoomIn4().playerX.elo));
     player1_win->setText("Win: " + QString::number(client->getRoomIn4().playerX.wins) + " - " + QString::number(client->getRoomIn4().playerX.winRate) + "%");
+
+    if(client->getRoomIn4().isFull){
+        player2_name->setText(client->getRoomIn4().playerO.ingame);
+        player2_elo->setText("Elo: " + QString::number(client->getRoomIn4().playerO.elo));
+        player2_win->setText("Win: " + QString::number(client->getRoomIn4().playerO.wins) + " - " + QString::number(client->getRoomIn4().playerO.winRate) + "%");
+    }
 
     if(client->getRoomIn4().turn == -2){
         for(int i = 0; i < 9; i++){
@@ -50,16 +56,16 @@ void Game_Screen::handleRoomIn4Changed(const room& newRoom){
         }
     }
 
-    if(client->getRoomIn4().player1_ready && client->getRoomIn4().player2_ready){
+    if(client->getRoomIn4().player2_ready){
         if(client->getUser().username == client->getRoomIn4().playerX.username){
             readyButton->setText("START");
         }
-    }
-
-    if(client->getRoomIn4().isFull){
-        player2_name->setText(client->getRoomIn4().playerO.username);
-        player2_elo->setText("Elo: " + QString::number(client->getRoomIn4().playerO.elo));
-        player2_win->setText("Win: " + QString::number(client->getRoomIn4().playerO.wins) + " - " + QString::number(client->getRoomIn4().playerO.winRate) + "%");
+    }else{
+        if(client->getUser().username == client->getRoomIn4().playerX.username && !client->getRoomIn4().player1_ready){
+            readyButton->setText("READY");
+        }else if(client->getUser().username == client->getRoomIn4().playerX.username && client->getRoomIn4().player1_ready){
+            readyButton->setText("UNREADY");
+        }
     }
 }
 

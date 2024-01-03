@@ -57,7 +57,7 @@ user TcpClient::getUser(){
     return clientUser;
 }
 
-void TcpClient::setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo){
+void TcpClient::setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo, QString ingame){
     this->clientUser.username = username;
     this->clientUser.status = status;
     this->clientUser.wins = wins;
@@ -65,6 +65,7 @@ void TcpClient::setUser(QString username, QString status, int wins, int loses, b
     this->clientUser.isFree = isFree;
     this->clientUser.winRate = winRate;
     this->clientUser.elo = elo;
+    this->clientUser.ingame = ingame;
     // qDebug() << this->clientUser.username << "\n";
 }
 

@@ -110,12 +110,14 @@ void loginform::handleServerResponse(const QByteArray& responseData){
 
             QString username = jsonResponse["user"]["username"].toString();
             QString status = jsonResponse["user"]["status"].toString();
+            QString ingame = jsonResponse["user"]["ingame"].toString();
             int wins = jsonResponse["user"]["wins"].toInt();
             int loses = jsonResponse["user"]["loses"].toInt();
             bool isFree = jsonResponse["user"]["isFree"].toBool();
             double winRate = jsonResponse["user"]["winRate"].toDouble();
             int elo = jsonResponse["user"]["elo"].toInt();
-            tcpClient->setUser(username, status, wins, loses, isFree, winRate, elo);
+
+            tcpClient->setUser(username, status, wins, loses, isFree, winRate, elo, ingame);
 
             mainmenulogin *menu_login = new mainmenulogin();
             menu_login->setClient(tcpClient);
@@ -146,6 +148,7 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             userValue.status = userObject["status"].toString();
             userValue.winRate = userObject["win rate"].toDouble();
             userValue.wins = userObject["wins"].toInt();
+            userValue.ingame = userObject["ingame"].toString();
             online.push_back(userValue);
         }
         tcpClient->setOnlineUser(online);

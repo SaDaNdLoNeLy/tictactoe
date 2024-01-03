@@ -49,6 +49,7 @@ private:
     QLineEdit *username;
     QLineEdit *password;
     QLineEdit *confirm_password;
+    QLineEdit *ingame;
     QLabel *warning_username;
     QLabel *warning_password;
     QLabel *warning_confirm_password;

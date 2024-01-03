@@ -15,6 +15,7 @@ registerform::registerform(QWidget *parent)
     username = QWidget::findChild<QLineEdit*>("username");
     password = QWidget::findChild<QLineEdit*>("password");
     confirm_password = QWidget::findChild<QLineEdit*>("confirm_password");
+    ingame = QWidget::findChild<QLineEdit*>("ingame");
     warning_username = QWidget::findChild<QLabel*>("warning_username");
     warning_password = QWidget::findChild<QLabel*>("warning_password");
     warning_confirm_password = QWidget::findChild<QLabel*>("warning_confirm_password");
@@ -85,6 +86,7 @@ void registerform::on_register_btn_clicked()
         QJsonObject newUser;
         newUser["username"] = username->text();
         newUser["password"] = password->text();
+        newUser["ingame"] = ingame->text();
         client->sendRequestToServer(RequestType::REGISTER, newUser);
     }
 }
@@ -133,8 +135,10 @@ void registerform::handleServerResponse(const QByteArray& responseData){
             loginUI->setTcpClient(client);
             loginUI->show();
             this->hide();
-        }else if(response["message"] == "register fail"){
-            warning_username->setText("This account has already existed");
+        }else if(response["message"] == "existed username"){
+            warning_username->setText("This username has already existed");
+        }else if(response["message"] == "existed ingame"){
+            warning_username->setText("This ingame has already existed");
         }
     }
 }
