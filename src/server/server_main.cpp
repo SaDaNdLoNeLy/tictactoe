@@ -33,7 +33,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <syslog.h>
 #include "server.hpp"
 
 
@@ -66,7 +65,6 @@ int main(int argc, char* argv[]){
     //     return EXIT_FAILURE;
     // }
     printf("Hello\n");
-    openlog("chess_srv", LOG_PID, LOG_DAEMON);
     printf("Hello\n");
     start_server(port);
     printf("Hello\n");

@@ -12,7 +12,6 @@
 
 #include <stdlib.h>
 #include <vector>
-#include <syslog.h>
 #include <pthread.h>
 #include <unistd.h>
 
@@ -80,7 +79,7 @@ void LoginMessage::process(){
     pthread_mutex_unlock(&sockfd_user_mutex);
 
     out_msg.push(new OKMessage((void*)user));
-    syslog(LOG_INFO, "User logged in: %s", user->username.c_str());
+    printf("User logged in: %s\n", user->username.c_str());
 }    
 
 // new game initiation message
@@ -169,7 +168,7 @@ void DisconnectMessage::process(){
 
     // no one was logged in on the socket
     if(u == NULL){
-        syslog(LOG_INFO, "client disconnected from socket %d", sockfd);
+        printf("client disconnected from socket %d\n", sockfd);
         return;
     }
 
@@ -180,7 +179,7 @@ void DisconnectMessage::process(){
     // if(queued_user == u) queued_user = NULL;
     // pthread_mutex_unlock(&game_mutex);
 
-    syslog(LOG_INFO, "User disconnected: %s", u->username.c_str());
+    printf("User disconnected: %s\n", u->username.c_str());
 }
 
 //// server -> client messages. They just need to be forwarded
@@ -261,7 +260,7 @@ Message* parseMessage(char *buf, int len, int sockfd) {
     return m;
     
 err:
-    syslog(LOG_ERR, "parseMessage: Invalid message format.");
+    printf("parseMessage: Invalid message format.\n");
     return NULL;
 }
 

@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <syslog.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -31,7 +30,7 @@ UserDB user_db;
 // Init rwlock instance for stopping concurent write
 UserDB::UserDB(){
     if (pthread_rwlock_init(&rwlock, NULL)){
-        syslog(LOG_ERR, "pthread_rwlock_init: %s", strerror(errno));
+        printf("pthread_rwlock_init: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
@@ -39,7 +38,7 @@ UserDB::UserDB(){
 // Destroy rwlock instance for stopping concurent write
 UserDB::~UserDB(){
     if (pthread_rwlock_destroy(&rwlock)){
-        syslog(LOG_ERR, "pthread_rwlock_destroy: %s", strerror(errno));
+        printf("pthread_rwlock_destroy: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
@@ -49,7 +48,6 @@ void UserDB::open_db(){
     int f = open(DB_PATH, O_CREAT, 0660);
 
     if (f < 0){
-        syslog(LOG_ERR, "open_db(): %s", strerror(errno));
         printf("%s\n", strerror(errno));
     }
 
@@ -57,28 +55,26 @@ void UserDB::open_db(){
 }
 
 std::vector<DataEntry>* UserDB::read_db(){
-    std::cout << "Hello World 1" << std::endl;
     std::vector<DataEntry>* db = new std::vector<DataEntry>();
-    std::cout << "Hello World 2" << std::endl;
+
     // Wait wlock when other thread is write data
     pthread_rwlock_rdlock(&rwlock);
 
-    std::cout << "Hello World 3" << std::endl;
+
     FILE* f = fopen(DB_PATH, "r+");
     if (f == NULL){
-        syslog(LOG_ERR, "fopen(): %s", strerror(errno));
+        printf("fopen(): %s", strerror(errno));
     }
-    std::cout << "Hello World 4" << std::endl;
+
     char buffer_username[MAX_USERNAME_LEN+1], buffer_pass[MAX_PASS_LEN+1];
 
     while (fscanf(f, "%s %s", buffer_username, buffer_pass) != EOF){
-        std::cout << "Hello World 6" << std::endl;
         db->push_back(DataEntry(buffer_username, buffer_pass));
     }
-    std::cout << "Hello World 5" << std::endl;
+
     fclose(f);
     if (pthread_rwlock_unlock(&rwlock)){
-        syslog(LOG_ERR, "UserDB::read_db() rwlock_unlock(): %s", strerror(errno));
+        printf("UserDB::read_db() rwlock_unlock(): %s", strerror(errno));
     }
 
     return db;

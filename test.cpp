@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <iostream>
 #include <fcntl.h>
+#include <syslog.h>
 int main() {
-    int f = open("user.txt", O_CREAT, 0660);
+    openlog("test", LOG_PID, LOG_DAEMON);
+    syslog(LOG_INFO, "Hello");
+    closelog();
 }

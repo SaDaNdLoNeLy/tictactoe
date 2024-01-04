@@ -10,7 +10,6 @@
  */
 
 #include <stdlib.h>
-#include <syslog.h>
 #include <vector>
 #include <string.h>
 #include <sys/socket.h>
@@ -48,20 +47,20 @@ void start_server(const char *port = NULL)
     int err = getaddrinfo(NULL, port, &hints, &res);
     if (err != 0)
     {
-        syslog(LOG_ERR, "getaddrinfo: %s", gai_strerror(err));
+        printf("getaddrinfo: %s\n", gai_strerror(err));
     }
 
     res_saved = res;
     int ssock = -1;
-    while (res != NULL && (ssock = socket(res->ai_family, res->ai_socktype, res->ai_protocol) < 0))
+    while (res != NULL && ((ssock = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) < 0))
     {
-        syslog(LOG_WARNING, "socket: %s", strerror(errno));
+        printf("socket: %s\n", strerror(errno));
         res = res->ai_next;
     }
 
     if (ssock < 0)
     {
-        syslog(LOG_ERR, "socket: Cannot open socket.");
+        printf("socket: Cannot open socket.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -70,35 +69,35 @@ void start_server(const char *port = NULL)
 
     if (bind(ssock, res->ai_addr, res->ai_addrlen) < 0)
     {
-        syslog(LOG_ERR, "listen: %s", strerror(errno));
+        printf("listen: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 
     if (listen(ssock, 10) < 0)
     {
-        syslog(LOG_ERR, "listen: %s", strerror(errno));
+        printf("listen: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 
     freeaddrinfo(res_saved);
-    syslog(LOG_INFO, "Server up.");
+    printf("Server up.\n");
 
     pthread_t in, out;
 
     if (pthread_create(&in, NULL, MessageQueueWorker::work, (void *)&in_msg))
     {
-        syslog(LOG_ERR, "pthread_create: %s", strerror(errno));
+        printf("pthread_create: %s\n", strerror(errno));
     }
     if (pthread_create(&out, NULL, MessageQueueWorker::work, (void *)&out_msg))
     {
-        syslog(LOG_ERR, "pthread_create: %s", strerror(errno));
+        printf("pthread_create: %s\n", strerror(errno));
     }
 
     pthread_t client_handler;
 
     if (pthread_create(&client_handler, NULL, MessageQueueWorker::work, (void *)&in_msg))
     {
-        syslog(LOG_ERR, "pthread_create: %s", strerror(errno));
+        printf("pthread_create: %s\n", strerror(errno));
     }
 
     user_db.open_db();
@@ -109,7 +108,7 @@ void start_server(const char *port = NULL)
 
     while ((csock = accept(ssock, (sockaddr *)&client_addr, &addr_len)) >= 0)
     {
-        syslog(LOG_INFO, "New client accepted, socket fd: %d", csock);
+        printf("New client accepted, socket fd: %d\n", csock);
         pthread_mutex_lock(&new_clients_mutex);
 
         pollfd cpoll;
@@ -125,7 +124,7 @@ void start_server(const char *port = NULL)
         pthread_mutex_unlock(&new_clients_mutex);
     }
 
-    syslog(LOG_ERR, "accept: %s", strerror(errno));
+    printf("accept: %s\n", strerror(errno));
     exit(EXIT_FAILURE);
 }
 
@@ -151,14 +150,14 @@ void *handle_client(void *data)
 
         if (poll(&clients[0], clients.size(), POLL_WAIT) < 0)
         {
-            syslog(LOG_ERR, "poll: %s", strerror(errno));
+            printf("poll: %s\n", strerror(errno));
         }
 
         for (int i = 0; i < clients.size(); i++)
         {
             if (clients[i].revents & (POLLERR | POLLNVAL))
             {
-                syslog(LOG_ERR, "poll: %s", strerror(errno));
+                printf("poll: %s\n", strerror(errno));
                 exit(EXIT_FAILURE);
             }
 
@@ -174,7 +173,7 @@ void *handle_client(void *data)
                 }
                 else if (read_len < 0)
                 {
-                    syslog(LOG_ERR, "read: %s", strerror(errno));
+                    printf("read: %s\n", strerror(errno));
                     exit(EXIT_FAILURE);
                 }
                 else

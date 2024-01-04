@@ -9,7 +9,6 @@
  * 
  */
 
-#include <syslog.h>
 #include <unistd.h>
 
 #include "user.hpp"
@@ -41,5 +40,5 @@ void User::send(Message *m){
 
     // Failed to send entire message, error
     if(len != s.size())
-        syslog(LOG_ERR, "User::send() cannot send message.");
+        printf("User::send() cannot send message.");
 }
