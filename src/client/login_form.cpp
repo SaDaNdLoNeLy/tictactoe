@@ -181,8 +181,6 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             new_room->roomName = room_data["room name"].toString();
             new_room->player1_ready = room_data["player1_ready"].toBool();
             new_room->player2_ready = room_data["player2_ready"].toBool();
-            new_room->currentBoard = room_data["current board"].toInt();
-            new_room->currentCell = room_data["current cell"].toInt();
             new_room->isFull = room_data["is full"].toBool();
             new_room->gameStart = room_data["game start"].toBool();
             new_room->turn = room_data["turn"].toInt();

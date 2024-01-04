@@ -72,7 +72,29 @@ void Game_Screen::handleRoomIn4Changed(const room& newRoom){
 void Game_Screen::handleServerResponse(const QByteArray& responseData){
     QJsonDocument responseJson = QJsonDocument::fromJson(responseData);
     // client->setRoomIn4(client->findRoomByRoomName(client->getRoomName()));
-    qDebug() << "Game screen response: " << responseJson << "\n";
+    // qDebug() << "Game screen response: " << responseJson << "\n";
+    if(responseJson["type"] == static_cast<int>(ResponseType::READY)){
+        std::vector<room> room_list = client->getRoomList();
+        QString room_name = responseJson["room name"].toString();
+        QString player_ready = responseJson["player username"].toString();
+
+        for(room &value: room_list){
+            if(value.roomName == room_name){
+                if(value.playerX.username == player_ready){
+                    value.player1_ready = true;
+                }
+                if(value.playerO.username == player_ready){
+                    value.player2_ready = true;
+                }
+            }
+        }
+        client->setRoomList(room_list);
+        room update_room = client->findRoomByRoomName(room_name);
+
+        if(client->getUser().username == update_room.playerX.username || client->getUser().username == update_room.playerO.username){
+            client->setRoomIn4(update_room);
+        }
+    }
 }
 
 void Game_Screen::setUpGrid(){
@@ -193,43 +215,20 @@ void Game_Screen::itemClicked() {
     // }
 }
 
-// void Game_Screen::randomButtonClicked(){
-//     QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
-
-//     clickedButton->setAutoExclusive(false);
-//     clickedButton->setChecked(false);
-//     clickedButton->setAutoExclusive(true);
-
-//     int randomNumber = clickedButton->text().toInt();
-//     QLabel *randomText = QWidget::findChild<QLabel*>("textRandom");
-
-//     randomText->setText("The number you choose is: " + QString::number(randomNumber));
-// }
-
-// void Game_Screen::setUpRandomFrame(){
-//     randomLayout = QMainWindow::findChild<QGridLayout*>("randomGridLayout");
-//     for(int i = 0; i < 10; i++){
-//         QString text = QString::number(i+1);
-//         randomButton[i] = createButton(text, SLOT(randomButtonClicked()));
-//         randomLayout->addWidget(randomButton[i], i/5, i%5 );
-//     }
-
-// }
-
 void Game_Screen::on_readyButton_clicked()
 {
     QJsonObject data;
     data["room_name"] = client->getRoomIn4().roomName;
     data["player_username"] = client->getUser().username;
 
-    // if(readyButton->text() == "READY"){
-    //     readyButton->setText("UNREADY");
-    //     client->sendRequestToServer(RequestType::READY, data);
-    // }else if(readyButton->text() == "UNREADY"){
-    //     readyButton->setText("READY");
-    //     client->sendRequestToServer(RequestType::UNREADY, data);
-    // }else if(readyButton->text() == "START"){
-    //     client->sendRequestToServer(RequestType::STARTGAME, data);
-    // }
+    if(readyButton->text() == "READY"){
+        readyButton->setText("UNREADY");
+        client->sendRequestToServer(RequestType::READY, data);
+    }else if(readyButton->text() == "UNREADY"){
+        readyButton->setText("READY");
+        client->sendRequestToServer(RequestType::UNREADY, data);
+    }else if(readyButton->text() == "START"){
+        client->sendRequestToServer(RequestType::START, data);
+    }
 }
 

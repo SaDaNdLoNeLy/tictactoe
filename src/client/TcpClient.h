@@ -14,6 +14,9 @@ enum class RequestType
     UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
+    READY,
+    UNREADY,
+    START
     // Add more request types as needed
 };
 
@@ -27,6 +30,9 @@ enum class ResponseType
     UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
+    READY,
+    UNREADY,
+    START,
 };
 
 struct user{
@@ -50,8 +56,6 @@ struct room{
     bool player1_ready;
     bool player2_ready;
     int turn = -2;
-    int currentBoard;
-    int currentCell;
     int nextBoard;
     room() : isFull(false), isPlayerXTurn(true), player1_ready(false), player2_ready(false), gameStart(false), turn(-2), nextBoard(-1){}
 };
