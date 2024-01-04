@@ -50,31 +50,32 @@ void UserDB::open_db(){
 
     if (f < 0){
         syslog(LOG_ERR, "open_db(): %s", strerror(errno));
+        printf("%s\n", strerror(errno));
     }
 
     close(f);
 }
 
 std::vector<DataEntry>* UserDB::read_db(){
-    // std::cout << "Hello World 1" << std::endl;
+    std::cout << "Hello World 1" << std::endl;
     std::vector<DataEntry>* db = new std::vector<DataEntry>();
-    // std::cout << "Hello World 2" << std::endl;
+    std::cout << "Hello World 2" << std::endl;
     // Wait wlock when other thread is write data
     pthread_rwlock_rdlock(&rwlock);
 
-    // std::cout << "Hello World 3" << std::endl;
+    std::cout << "Hello World 3" << std::endl;
     FILE* f = fopen(DB_PATH, "r+");
     if (f == NULL){
         syslog(LOG_ERR, "fopen(): %s", strerror(errno));
     }
-    // std::cout << "Hello World 4" << std::endl;
-    char buffer_usrname[MAX_USERNAME_LEN+1], buffer_pass[MAX_PASS_LEN+1];
+    std::cout << "Hello World 4" << std::endl;
+    char buffer_username[MAX_USERNAME_LEN+1], buffer_pass[MAX_PASS_LEN+1];
 
-    while (fscanf(f, "%s %s", buffer_usrname, buffer_pass) != EOF){
-        // std::cout << "Hello World 6" << std::endl;
-        db->push_back(DataEntry(buffer_usrname, buffer_pass));
+    while (fscanf(f, "%s %s", buffer_username, buffer_pass) != EOF){
+        std::cout << "Hello World 6" << std::endl;
+        db->push_back(DataEntry(buffer_username, buffer_pass));
     }
-    // std::cout << "Hello World 5" << std::endl;
+    std::cout << "Hello World 5" << std::endl;
     fclose(f);
     if (pthread_rwlock_unlock(&rwlock)){
         syslog(LOG_ERR, "UserDB::read_db() rwlock_unlock(): %s", strerror(errno));
@@ -91,7 +92,7 @@ User* UserDB::auth_user(std::string username, std::string pass){
     User* user = NULL;
 
     for (int i = 0; i < db->size(); i++){
-        // Success full auth
+        // Successfull auth
         if ((*db)[i].username == username && (*db)[i].pass == pass){
             pthread_mutex_lock(&username_user_mutex);
 

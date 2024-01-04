@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef MESSAGE_HPP
-#define MESSAGE_HPP
+#ifndef GLOBAL_MESSAGE_HPP
+#define GLOBAL_MESSAGE_HPP
 
 #include <string>
 #include <queue>
@@ -120,6 +120,15 @@ struct MovedMessage : public Message
     void *user;
 
     MovedMessage(int coord, void* user = NULL);
+
+    std::string to_string();
+    void process();
+};
+
+struct DisconnectMessage :public Message {
+    int sockfd;
+
+    DisconnectMessage(int _sockfd);
 
     std::string to_string();
     void process();

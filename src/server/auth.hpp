@@ -17,7 +17,8 @@
 #include <vector>
 #include "user.hpp"
 
-#define DB_PATH "../src/server/user.txt"
+// DB file is inside build/src folder
+#define DB_PATH "user.txt"
 
 struct DataEntry {
     std::string username, pass;
@@ -43,7 +44,7 @@ struct UserDB {
     int create_user(std::string username, std::string pass);
 };
 
-// ONLY 1 UserDB is created NO reinitialization because of multiple rwlock
+// ONLY 1 UserDB for write data is created NO reinitialization because of multiple rwlock
 extern UserDB user_db;
 
 #endif

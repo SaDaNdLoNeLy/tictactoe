@@ -17,6 +17,8 @@
 // Default PORT if no argument is provided
 #define PORT "8000"
 
+// timeout time of the poll() call in ms when managing clients
+#define POLL_WAIT 500
 
 extern MessageQueue in_msg, out_msg;
 

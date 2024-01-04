@@ -110,6 +110,11 @@ std::string MovedMessage::to_string()
     return s;
 }
 
+std::string DisconnectMessage::to_string(){
+    std::string s = "DISCONNECTED " + std::to_string(sockfd) + "\n";
+    return s;
+}
+
 // Constructor
 
 RegisterMessage::RegisterMessage(std::string username, std::string pass, int sockfd)
@@ -132,6 +137,10 @@ ErrorMessage::ErrorMessage(std::string err, void *user)
 
 MovedMessage::MovedMessage(int coord, void *user)
     : coord(coord), user(user) {}
+
+DisconnectMessage::DisconnectMessage(int _sockfd)
+    :sockfd(_sockfd) {}
+
 
 // string to int
 int string_to_int(std::string s)
