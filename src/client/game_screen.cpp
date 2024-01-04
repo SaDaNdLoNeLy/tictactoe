@@ -48,14 +48,6 @@ void Game_Screen::handleRoomIn4Changed(const room& newRoom){
         player2_win->setText("Win: " + QString::number(client->getRoomIn4().playerO.wins) + " - " + QString::number(client->getRoomIn4().playerO.winRate) + "%");
     }
 
-    if(client->getRoomIn4().turn == -2){
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
-                itemButtons[i][j]->setDisabled(true);
-            }
-        }
-    }
-
     if(client->getRoomIn4().player2_ready){
         if(client->getUser().username == client->getRoomIn4().playerX.username){
             readyButton->setText("START");
@@ -66,6 +58,35 @@ void Game_Screen::handleRoomIn4Changed(const room& newRoom){
         }else if(client->getUser().username == client->getRoomIn4().playerX.username && client->getRoomIn4().player1_ready){
             readyButton->setText("UNREADY");
         }
+    }
+
+    if(!client->getRoomIn4().gameStart){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                itemButtons[i][j]->setDisabled(true);
+            }
+        }
+    }else{
+        readyButton->setText("SURRENDER");
+
+        //first turn
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(client->getRoomIn4().nextBoard == -2){
+                    // check first turn
+                    if(client->getRoomIn4().isPlayerXTurn && client->getUser().username == client->getRoomIn4().playerX.username){
+                        itemButtons[i][j]->setDisabled(false);
+                    }else{
+                        itemButtons[i][j]->setDisabled(true);
+                    }
+                }else{
+                    // second turn
+                }
+            }
+        }
+
+        // second turn
+
     }
 }
 
@@ -94,6 +115,43 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
         if(client->getUser().username == update_room.playerX.username || client->getUser().username == update_room.playerO.username){
             client->setRoomIn4(update_room);
         }
+    }else if(responseJson["type"] == static_cast<int>(ResponseType::UNREADY)){
+        std::vector<room> room_list = client->getRoomList();
+        QString room_name = responseJson["room name"].toString();
+        QString player_ready = responseJson["player username"].toString();
+
+        for(room &value: room_list){
+            if(value.roomName == room_name){
+                if(value.playerX.username == player_ready){
+                    value.player1_ready = false;
+                }
+                if(value.playerO.username == player_ready){
+                    value.player2_ready = false;
+                }
+            }
+        }
+        client->setRoomList(room_list);
+        room update_room = client->findRoomByRoomName(room_name);
+
+        if(client->getUser().username == update_room.playerX.username || client->getUser().username == update_room.playerO.username){
+            client->setRoomIn4(update_room);
+        }
+    }else if(responseJson["type"] == static_cast<int>(ResponseType::START)){
+        QString room_name = responseJson["room name"].toString();
+        std::vector<room> room_list = client->getRoomList();
+
+        for(room &value: room_list){
+            if(value.roomName == room_name){
+                value.gameStart = true;
+                value.nextBoard = -1;
+                value.turn = 0;
+                if(client->getUser().username == value.playerX.username || client->getUser().username == value.playerO.username){
+                    client->setRoomIn4(value);
+                    qDebug() << "updated value: " << client->getRoomIn4().gameStart << "\n";
+                }
+            }
+        }
+        client->setRoomList(room_list);
     }
 }
 
@@ -184,9 +242,6 @@ void Game_Screen::itemClicked() {
     clickedButton->setAutoExclusive(false);
     clickedButton->setChecked(false);
     clickedButton->setAutoExclusive(true);
-    // QWidget *parentWidget = clickedButton->parentWidget();
-    // QGridLayout *parentLayout = qobject_cast<QGridLayout*>(parentWidget->layout());
-    // int nextCellPosition = clickedButton->objectName().toInt();
 
     if(!client->getRoomIn4().gameStart){
         for(int i = 0; i < 9; i++){
@@ -196,23 +251,16 @@ void Game_Screen::itemClicked() {
         }
     }
 
-    QJsonObject data;
-    data["room name"] = client->getRoomIn4().roomName;
-    data["current board"] = clickedButton->parentWidget()->layout()->objectName();
-    data["current cell"] = clickedButton->objectName();
-    data["player username"] = client->getUser().username;
-    // client->sendRequestToServer(RequestType::MOVE, data);
+    int current_cell = clickedButton->objectName().toInt();
+    int current_board = clickedButton->parentWidget()->layout()->objectName().toInt();
+    int next_board = current_cell;
+    QString room_name = client->getRoomIn4().roomName;
 
-    // for(int i = 0; i < 9; i++){
-    //     for(int j = 0; j < 9; j++){
-    //         if(i == nextCellPosition){
-    //             itemButtons[i][j]->setDisabled(false);
-    //         }else{
-    //             itemButtons[i][j]->setDisabled(true);
-    //         }
-    //         itemButtons[layoutIndex][nextCellPosition]->setText("X");
-    //     }
-    // }
+    QJsonObject data;
+    data["room name"] = room_name;
+    data["current_cell"] = current_cell;
+    data["current_board"] = current_board;
+    data["player username"] = client->getUser().username;
 }
 
 void Game_Screen::on_readyButton_clicked()

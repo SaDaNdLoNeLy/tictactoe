@@ -16,7 +16,8 @@ enum class RequestType
     JOINROOM,
     READY,
     UNREADY,
-    START
+    START,
+    MOVE,
     // Add more request types as needed
 };
 
@@ -33,6 +34,7 @@ enum class ResponseType
     READY,
     UNREADY,
     START,
+    MOVE,
 };
 
 struct user{
@@ -57,7 +59,7 @@ struct room{
     bool player2_ready;
     int turn = -2;
     int nextBoard;
-    room() : isFull(false), isPlayerXTurn(true), player1_ready(false), player2_ready(false), gameStart(false), turn(-2), nextBoard(-1){}
+    room() : isFull(false), isPlayerXTurn(true), player1_ready(false), player2_ready(false), gameStart(false), turn(-2), nextBoard(-2){}
 };
 
 class TcpClient : public QObject
