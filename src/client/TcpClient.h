@@ -18,6 +18,10 @@ enum class RequestType
     UNREADY,
     START,
     MOVE,
+    WINBOARD,
+    NEXTTURN,
+    WINGAME,
+    SURRENDER,
     // Add more request types as needed
 };
 
@@ -35,6 +39,10 @@ enum class ResponseType
     UNREADY,
     START,
     MOVE,
+    WINBOARD,
+    NEXTTURN,
+    WINGAME,
+    SURRENDER,
 };
 
 struct user{
@@ -57,8 +65,12 @@ struct room{
     bool gameStart;
     bool player1_ready;
     bool player2_ready;
+    int last_cell;
+    int last_board;
     int turn = -2;
-    int nextBoard;
+    int nextBoard = -2;
+    std::vector<int> winning_board;
+
     room() : isFull(false), isPlayerXTurn(true), player1_ready(false), player2_ready(false), gameStart(false), turn(-2), nextBoard(-2){}
 };
 

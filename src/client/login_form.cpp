@@ -170,6 +170,25 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             online_list.push_back(*onlineUser);
             tcpClient->setOnlineUser(online_list);
             qDebug() << "update online user size: " << tcpClient->getOnlineUser().size() << "\n";
+        }else if(jsonResponse["message"] == "update elo"){
+            QJsonArray user_list = jsonResponse["user list"].toArray();
+            std::vector<user> online_list;
+
+            for(QJsonValue userValue : user_list){
+                QJsonObject userObject = userValue.toObject();
+                user *onlineUser = new user();
+                onlineUser->username = userObject["username"].toString();
+                onlineUser->status = userObject["status"].toString();
+                onlineUser->elo = userObject["elo"].toInt();
+                onlineUser->ingame = userObject["ingame"].toString();
+                onlineUser->isFree = userObject["isFree"].toBool();
+                onlineUser->wins = userObject["wins"].toInt();
+                onlineUser->loses = userObject["losses"].toInt();
+                onlineUser->winRate = userObject["win rate"].toDouble();
+
+                online_list.push_back(*onlineUser);
+            }
+            tcpClient->setOnlineUser(online_list);
         }
     }else if(jsonResponse["type"] == static_cast<int>(RequestType::GETROOMLIST)){
         QJsonArray room_list = jsonResponse["room list"].toArray();

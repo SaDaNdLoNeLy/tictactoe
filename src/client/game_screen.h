@@ -39,6 +39,8 @@ public slots:
 private slots:
     void on_readyButton_clicked();
 
+    void on_exit_clicked();
+
 private:
     Ui::Game_Screen *ui;
 

@@ -57,11 +57,17 @@ void mainmenulogin::on_cancel_clicked()
 void mainmenulogin::on_create_clicked()
 {
     QString roomName = createRoomInput->text();
-    QJsonObject roomData;
-    roomData["room name"] = roomName;
-    roomData["player X username"] = client->getUser().username;
-    qDebug() << client->getUser().username << "\n";
-    client->sendRequestToServer(RequestType::CREATEROOM, roomData);
+    if(!roomName.isEmpty()){
+        warning_create->setText("");
+        QJsonObject roomData;
+        roomData["room name"] = roomName;
+        roomData["player X username"] = client->getUser().username;
+        // qDebug() << client->getUser().username << "\n";
+        client->sendRequestToServer(RequestType::CREATEROOM, roomData);
+    }else{
+        warning_create->setText("Room name cannot be empty");
+    }
+
 }
 
 
@@ -80,10 +86,16 @@ void mainmenulogin::on_cancel_3_clicked()
 void mainmenulogin::on_join_clicked()
 {
     QString roomName = joinRoomInput->text();
-    QJsonObject roomData;
-    roomData["room name"] = roomName;
-    roomData["player O username"] = client->getUser().username;
-    client->sendRequestToServer(RequestType::JOINROOM, roomData);
+    if(!roomName.isEmpty()){
+        warning_join->setText("");
+        QJsonObject roomData;
+        roomData["room name"] = roomName;
+        roomData["player O username"] = client->getUser().username;
+        client->sendRequestToServer(RequestType::JOINROOM, roomData);
+    }else{
+        warning_join->setText("Room name cannot be empty");
+    }
+
 }
 
 void mainmenulogin::setClient(TcpClient *client){
