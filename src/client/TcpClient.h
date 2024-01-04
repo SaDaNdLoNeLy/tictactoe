@@ -8,18 +8,12 @@ enum class RequestType
 {
     LOGIN,
     LOGOUT,
-    REGISTER,
+    UPDATEONLINEUSER,
+    GETONLINEUSER,
     GETROOMLIST,
-    GETONLINEPLAYER,
-    UPDATEONLINELIST,
     UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
-    ROOMLIST,
-    READY,
-    UNREADY,
-    STARTGAME,
-    MOVE,
     // Add more request types as needed
 };
 
@@ -27,18 +21,12 @@ enum class ResponseType
 {
     LOGIN,
     LOGOUT,
-    REGISTER,
+    UPDATEONLINEUSER,
+    GETONLINEUSER,
     GETROOMLIST,
-    GETONLINEPLAYER,
-    UPDATEONLINELIST,
     UPDATEROOMLIST,
     CREATEROOM,
     JOINROOM,
-    ROOMLIST,
-    READY,
-    UNREADY,
-    STARTGAME,
-    MOVE,
 };
 
 struct user{
@@ -82,19 +70,19 @@ public:
 
     user getUser();
     void setUser(QString username, QString status, int wins, int loses, bool isFree, double winRate, int elo, QString ingame);
-    void setUserfromUser(user newUpdate);
+    void setUserfromUser(user &newUpdate);
 
     std::vector<user> getOnlineUser();
-    void setOnlineUser(std::vector<user> onlineUser);
+    void setOnlineUser(std::vector<user> &onlineUser);
 
     std::vector<room> getRoomList();
-    void setRoomList(std::vector<room> roomList);
+    void setRoomList(std::vector<room> &roomList);
 
     QString getRoomName();
     void setRoomName(QString room_name);
 
     room getRoomIn4();
-    void setRoomIn4(room roomIn4);
+    void setRoomIn4(room &roomIn4);
 
     user findUserByUsername(const QString &username);
     room findRoomByRoomName(const QString &room_name);

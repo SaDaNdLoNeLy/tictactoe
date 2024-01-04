@@ -36,7 +36,7 @@ void TcpClient::onReadyRead(){
 
 void TcpClient::onDisconnected(){
     QJsonObject logoutMessage;
-    logoutMessage["type"] = static_cast<int>(RequestType::LOGOUT);
+    // logoutMessage["type"] = static_cast<int>(RequestType::LOGOUT);
     logoutMessage["username"] = clientUser.username;
 
     QJsonDocument doc(logoutMessage);
@@ -84,7 +84,7 @@ std::vector<user> TcpClient::getOnlineUser(){
     return onlineUser;
 }
 
-void TcpClient::setOnlineUser(std::vector<user> onlineUser){
+void TcpClient::setOnlineUser(std::vector<user> &onlineUser){
     this->onlineUser = onlineUser;
 }
 
@@ -92,7 +92,7 @@ std::vector<room> TcpClient::getRoomList(){
     return roomList;
 }
 
-void TcpClient::setRoomList(std::vector<room> roomList){
+void TcpClient::setRoomList(std::vector<room> &roomList){
     this->roomList = roomList;
 }
 
@@ -106,7 +106,7 @@ user TcpClient::findUserByUsername(const QString& username){
     return user();
 }
 
-void TcpClient::setUserfromUser(user newUpdate){
+void TcpClient::setUserfromUser(user &newUpdate){
     this->clientUser = newUpdate;
 }
 
@@ -122,7 +122,7 @@ room TcpClient::getRoomIn4(){
     return this->roomIn4;
 }
 
-void TcpClient::setRoomIn4(room roomIn4){
+void TcpClient::setRoomIn4(room &roomIn4){
     this->roomIn4 = roomIn4;
     emit roomIn4Changed(roomIn4);
 }

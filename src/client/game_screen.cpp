@@ -179,7 +179,7 @@ void Game_Screen::itemClicked() {
     data["current board"] = clickedButton->parentWidget()->layout()->objectName();
     data["current cell"] = clickedButton->objectName();
     data["player username"] = client->getUser().username;
-    client->sendRequestToServer(RequestType::MOVE, data);
+    // client->sendRequestToServer(RequestType::MOVE, data);
 
     // for(int i = 0; i < 9; i++){
     //     for(int j = 0; j < 9; j++){
@@ -222,14 +222,14 @@ void Game_Screen::on_readyButton_clicked()
     data["room_name"] = client->getRoomIn4().roomName;
     data["player_username"] = client->getUser().username;
 
-    if(readyButton->text() == "READY"){
-        readyButton->setText("UNREADY");
-        client->sendRequestToServer(RequestType::READY, data);
-    }else if(readyButton->text() == "UNREADY"){
-        readyButton->setText("READY");
-        client->sendRequestToServer(RequestType::UNREADY, data);
-    }else if(readyButton->text() == "START"){
-        client->sendRequestToServer(RequestType::STARTGAME, data);
-    }
+    // if(readyButton->text() == "READY"){
+    //     readyButton->setText("UNREADY");
+    //     client->sendRequestToServer(RequestType::READY, data);
+    // }else if(readyButton->text() == "UNREADY"){
+    //     readyButton->setText("READY");
+    //     client->sendRequestToServer(RequestType::UNREADY, data);
+    // }else if(readyButton->text() == "START"){
+    //     client->sendRequestToServer(RequestType::STARTGAME, data);
+    // }
 }
 

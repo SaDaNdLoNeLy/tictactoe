@@ -6,6 +6,8 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QIcon>
+#include <cmath>
+#include <iomanip>
 #include "menu_login.h"
 
 loginform::loginform(QWidget *parent)
@@ -100,107 +102,99 @@ void loginform::on_login_btn_clicked()
 
 void loginform::handleServerResponse(const QByteArray& responseData){
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
+    // qDebug() << "login screen: " << jsonResponse << "\n";
     if(jsonResponse["type"] == static_cast<int>(ResponseType::LOGIN)){
         if(jsonResponse["message"] == "login success"){
-            warning_username->setText("");
             QJsonObject data;
-            data["username"] = jsonResponse["user"]["username"].toString();
-            QString username = jsonResponse["user"]["username"].toString();
-            QString status = jsonResponse["user"]["status"].toString();
-            QString ingame = jsonResponse["user"]["ingame"].toString();
-            int wins = jsonResponse["user"]["wins"].toInt();
-            int loses = jsonResponse["user"]["loses"].toInt();
-            bool isFree = jsonResponse["user"]["isFree"].toBool();
-            double winRate = jsonResponse["user"]["winRate"].toDouble();
-            int elo = jsonResponse["user"]["elo"].toInt();
-
-            tcpClient->setUser(username, status, wins, loses, isFree, winRate, elo, ingame);
-            tcpClient->sendRequestToServer(RequestType::GETONLINEPLAYER, data);
-            QTimer::singleShot(2000, [=](){
-                tcpClient->sendRequestToServer(RequestType::GETROOMLIST, data);
-            });
+            QJsonObject login_user = jsonResponse["user"].toObject();
+            user *loginUser = new user();
+            loginUser->username = login_user["username"].toString();
+            loginUser->ingame = login_user["ingame"].toString();
+            loginUser->isFree = login_user["is free"].toBool();
+            loginUser->wins = login_user["wins"].toInt();
+            loginUser->loses = login_user["loses"].toInt();
+            loginUser->elo = login_user["elo"].toInt();
+            loginUser->status = login_user["status"].toString();
+            loginUser->winRate = login_user["win rate"].toDouble();
+            tcpClient->setUserfromUser(*loginUser);
+            tcpClient->sendRequestToServer(RequestType::GETONLINEUSER, data);
+            // tcpClient->sendRequestToServer(RequestType::GETROOMLIST, data);
 
             mainmenulogin *menu_login = new mainmenulogin();
             menu_login->setClient(tcpClient);
             menu_login->show();
             this->hide();
-        }else if(jsonResponse["message"] == "already login"){
-            warning_username->setText("This account has been signed in another device");
         }else if(jsonResponse["message"] == "login fail"){
-            warning_username->setText("Wrong username or password. Try again!");
-        }else if(jsonResponse["message"] == "not existed"){
-            warning_username->setText("This account is not existed");
+            warning_username->setText("wrong username or password. Try again!");
+        }else if(jsonResponse["message"] == "already login"){
+            warning_username->setText("this account has been signed in another device!");
         }
-    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::GETONLINEPLAYER)){
-        QJsonArray onlinePlayer = jsonResponse["online user"].toArray();
-        std::vector<user> online_list;
+    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::GETONLINEUSER)){
+        QJsonArray online_list = jsonResponse["online user"].toArray();
+        std::vector<user> online_user;
 
-        for(const QJsonValue &value : onlinePlayer){
-            QJsonObject userObject = value.toObject();
+        for(QJsonValue online_player : online_list){
+            QJsonObject userObject = online_player.toObject();
+            user *onlineUser = new user();
+            onlineUser->username = userObject["username"].toString();
+            onlineUser->status = userObject["status"].toString();
+            onlineUser->elo = userObject["elo"].toInt();
+            onlineUser->ingame = userObject["ingame"].toString();
+            onlineUser->isFree = userObject["isFree"].toBool();
+            onlineUser->wins = userObject["wins"].toInt();
+            onlineUser->loses = userObject["losses"].toInt();
+            onlineUser->winRate = userObject["win rate"].toDouble();
 
-            user userValue;
-            userValue.username = userObject["username"].toString();
-            userValue.elo = userObject["elo"].toInt();
-            userValue.isFree = userObject["isFree"].toBool();
-            userValue.loses = userObject["losses"].toInt();
-            userValue.status = userObject["status"].toString();
-            userValue.winRate = userObject["win rate"].toDouble();
-            userValue.wins = userObject["wins"].toInt();
-            userValue.ingame = userObject["ingame"].toString();
-            online_list.push_back(userValue);
+            online_user.push_back(*onlineUser);
         }
-        tcpClient->setOnlineUser(online_list);
-        qDebug() << tcpClient->getOnlineUser().size();
-    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::UPDATEONLINELIST)){
-        if(jsonResponse["message"] == "add online users"){
-            user newUser;
-            newUser.username = jsonResponse["user"]["username"].toString();
-            newUser.ingame = jsonResponse["user"]["ingame"].toString();
-            newUser.wins = jsonResponse["user"]["wins"].toInt();
-            newUser.loses = jsonResponse["user"]["loses"].toInt();
-            newUser.elo = jsonResponse["user"]["elo"].toInt();
-            newUser.isFree = jsonResponse["user"]["isFree"].toBool();
-            newUser.status = jsonResponse["user"]["status"].toString();
-            newUser.winRate = jsonResponse["user"]["winRate"].toDouble();
+        tcpClient->setOnlineUser(online_user);
+        // qDebug() << tcpClient->getOnlineUser()[0].username << "\n";
+        if(jsonResponse["room list size"].toInt() > 0){
+            QJsonObject data;
+            tcpClient->sendRequestToServer(RequestType::GETROOMLIST, data);
+        }
+    }else if(jsonResponse["type"] == static_cast<int>(RequestType::UPDATEONLINEUSER)){
+        if(jsonResponse["message"] == "add user to online list"){
+            QJsonObject userObject = jsonResponse["user"].toObject();
+            user *onlineUser = new user();
+            onlineUser->username = userObject["username"].toString();
+            onlineUser->status = userObject["status"].toString();
+            onlineUser->elo = userObject["elo"].toInt();
+            onlineUser->ingame = userObject["ingame"].toString();
+            onlineUser->isFree = userObject["isFree"].toBool();
+            onlineUser->wins = userObject["wins"].toInt();
+            onlineUser->loses = userObject["losses"].toInt();
+            onlineUser->winRate = userObject["win rate"].toDouble();
 
-            std::vector<user>online_list = tcpClient->getOnlineUser();
-            online_list.push_back(newUser);
+            std::vector<user> online_list = tcpClient->getOnlineUser();
+            online_list.push_back(*onlineUser);
             tcpClient->setOnlineUser(online_list);
-            qDebug() << tcpClient->getOnlineUser().size();
-        }else if(jsonResponse["message"] == "delete user from online list"){
-            std::vector<user> onlineUser = tcpClient->getOnlineUser();
-            QString username = jsonResponse["username"].toString();
-
-            onlineUser.erase(std::remove_if(onlineUser.begin(), onlineUser.end(), [&](const user& u){
-                return u.username == username;
-                             }), onlineUser.end());
-
-            tcpClient->setOnlineUser(onlineUser);
-            qDebug() << "after logout: " << tcpClient->getOnlineUser().size();
+            qDebug() << "update online user size: " << tcpClient->getOnlineUser().size() << "\n";
         }
-    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::GETROOMLIST)){
-        QJsonArray room_data = jsonResponse["room list"].toArray();
-        std::vector<room> room_list;
+    }else if(jsonResponse["type"] == static_cast<int>(RequestType::GETROOMLIST)){
+        QJsonArray room_list = jsonResponse["room list"].toArray();
+        std::vector<room> updated_room_list;
 
-        for(const QJsonValue &value : room_data){
-            QJsonObject roomObject = value.toObject();
-
-            room roomValue;
-            roomValue.roomName = roomObject["room name"].toString();
-            roomValue.playerX = tcpClient->findUserByUsername(roomObject["player X username"].toString());
-            roomValue.isFull = roomObject["is full"].toBool();
-            roomValue.player1_ready = roomObject["player1_ready"].toBool();
-            roomValue.player2_ready = roomObject["player2_ready"].toBool();
-            roomValue.gameStart = roomObject["game start"].toBool();
-            roomValue.turn = roomObject["turn"].toInt();
-            roomValue.isPlayerXTurn = roomObject["is player X turn"].toBool();
-            roomValue.nextBoard = roomObject["next board"].toInt();
-            if(roomObject["is full"].toBool()){
-                roomValue.playerO = tcpClient->findUserByUsername(roomObject["player O username"].toString());
+        for(QJsonValue roomValue : room_list){
+            QJsonObject room_data = roomValue.toObject();
+            room *new_room = new room();
+            new_room->roomName = room_data["room name"].toString();
+            new_room->player1_ready = room_data["player1_ready"].toBool();
+            new_room->player2_ready = room_data["player2_ready"].toBool();
+            new_room->currentBoard = room_data["current board"].toInt();
+            new_room->currentCell = room_data["current cell"].toInt();
+            new_room->isFull = room_data["is full"].toBool();
+            new_room->gameStart = room_data["game start"].toBool();
+            new_room->turn = room_data["turn"].toInt();
+            new_room->isPlayerXTurn = room_data["is player X turn"].toBool();
+            new_room->nextBoard = room_data["next board"].toInt();
+            new_room->playerX = tcpClient->findUserByUsername(room_data["player X username"].toString());
+            if(new_room->isFull){
+                new_room->playerO = tcpClient->findUserByUsername(room_data["player O username"].toString());
             }
 
-            room_list.push_back(roomValue);
+            updated_room_list.push_back(*new_room);
         }
-        tcpClient->setRoomList(room_list);
+        tcpClient->setRoomList(updated_room_list);
     }
 }

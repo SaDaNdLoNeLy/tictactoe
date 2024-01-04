@@ -60,6 +60,7 @@ void mainmenulogin::on_create_clicked()
     QJsonObject roomData;
     roomData["room name"] = roomName;
     roomData["player X username"] = client->getUser().username;
+    qDebug() << client->getUser().username << "\n";
     client->sendRequestToServer(RequestType::CREATEROOM, roomData);
 }
 
@@ -92,72 +93,76 @@ void mainmenulogin::setClient(TcpClient *client){
 
 void mainmenulogin::handleServerResponse(const QByteArray& responseData){
     QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
-    // qDebug() << "Response from menu login: " << jsonResponse << "\n";
     if(jsonResponse["type"] == static_cast<int>(ResponseType::CREATEROOM)){
         if(jsonResponse["message"] == "create success"){
-            warning_create->setText("");
-            client->setRoomName(jsonResponse["room infor"]["room name"].toString());
-            // room newRoom;
-            // newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
-            // newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
-            // std::vector<room> roomList = client->getRoomList();
-            // roomList.push_back(newRoom);
-            // client->setRoomList(roomList);
-
+            qDebug() << "test game screen: " << "\n";
             Game_Screen *room_screen = new Game_Screen();
             room_screen->setClient(client);
             room_screen->show();
             this->hide();
-        }else if(jsonResponse["type"] == "create fail"){
-            warning_create->setText("This room name is existed");
-        }
-    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::JOINROOM)){
-        if(jsonResponse["message"] == "join success"){
-            warning_join->setText("");
-            client->setRoomName(jsonResponse["room name"].toString());
-            // std::vector<room> roomList = client->getRoomList();
-            // for(room &value : roomList){
-            //     if(value.roomName == client->getRoomName()){
-            //         value.playerO = client->findUserByUsername(jsonResponse["user name"].toString());
-            //         value.isFull = true;
-            //     }
-            // }
-            // client->setRoomList(roomList);
 
-            Game_Screen *room_screen = new Game_Screen();
-            room_screen->setClient(client);
-            room_screen->show();
-            this->hide();
-        }else if(jsonResponse["message"] == "full"){
-            warning_join->setText("This room is full");
-        }else if(jsonResponse["message"] == "join fail"){
-            warning_join->setText("This room is now existed");
+            QJsonObject room_data = jsonResponse["data"].toObject();
+            // create new room
+            room *new_room = new room();
+            new_room->roomName = room_data["name"].toString();
+            new_room->playerX = client->findUserByUsername(room_data["player X username"].toString());
+            client->setRoomIn4(*new_room);
+
+            // add new room to room list
+            std::vector<room> room_list = client->getRoomList();
+            room_list.push_back(*new_room);
+            client->setRoomList(room_list);
+        }else if(jsonResponse["message"] == "create fail"){
+            warning_create->setText("This room is existed");
         }
     }else if(jsonResponse["type"] == static_cast<int>(ResponseType::UPDATEROOMLIST)){
-        if(jsonResponse["message"] == "create room"){
-            room newRoom;
-            newRoom.roomName = jsonResponse["room infor"]["room name"].toString();
-            newRoom.playerX = client->findUserByUsername(jsonResponse["room infor"]["player X username"].toString());
-            std::vector<room> roomList;
-            roomList.push_back(newRoom);
-            client->setRoomList(roomList);
+        if(jsonResponse["message"] == "add room to room list"){
+            QJsonObject room_data = jsonResponse["data"].toObject();
 
-            if(client->getUser().username == newRoom.playerX.username){
-                client->setRoomIn4(newRoom);
-            }
-        }else if(jsonResponse["message"] == "join room"){
-            std::vector<room> roomList = client->getRoomList();
-            for(room &value : roomList){
-                if(value.roomName == jsonResponse["room name"].toString()){
-                    value.playerO = client->findUserByUsername(jsonResponse["user name"].toString());
-                    value.isFull = true;
+            room *new_room = new room();
+            new_room->roomName = room_data["name"].toString();
+            new_room->playerX = client->findUserByUsername(room_data["player X username"].toString());
+
+            std::vector<room> room_list = client->getRoomList();
+            room_list.push_back(*new_room);
+            client->setRoomList(room_list);
+        }else if(jsonResponse["message"] == "add player to room"){
+            QString room_name = jsonResponse["room name"].toString();
+            QString player_O_username = jsonResponse["player O username"].toString();
+            std::vector<room> room_list = client->getRoomList();
+
+            for(room &room_value : room_list){
+                if(room_value.roomName == room_name){
+                    room_value.playerO = client->findUserByUsername(player_O_username);
+                    room_value.isFull = true;
+                    if(client->getUser().username == room_value.playerX.username){
+                        client->setRoomIn4(room_value);
+                    }
                 }
             }
-            client->setRoomList(roomList);
-            room foundRoom = client->findRoomByRoomName(jsonResponse["room name"].toString());
-            if(client->getUser().username == foundRoom.playerX.username || client->getUser().username == foundRoom.playerO.username){
-                client->setRoomIn4(foundRoom);
+
+            client->setRoomList(room_list);
+
+        }
+    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::JOINROOM)){
+        if(jsonResponse["message"] == "full"){
+            warning_join->setText("This room is full!");
+        }else if(jsonResponse["message"] == "join success"){
+            Game_Screen *room_screen = new Game_Screen();
+            room_screen->setClient(client);
+            room_screen->show();
+            this->hide();
+
+            QString room_name = jsonResponse["room name"].toString();
+            std::vector<room> room_list = client->getRoomList();
+            for(room &room_value: room_list){
+                if(room_value.roomName == room_name){
+                    room_value.playerO = client->findUserByUsername(client->getUser().username);
+                    room_value.isFull = true;
+                    client->setRoomIn4(room_value);
+                }
             }
+            client->setRoomList(room_list);
         }
     }
 
