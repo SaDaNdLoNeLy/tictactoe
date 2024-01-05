@@ -41,6 +41,10 @@ private slots:
 
     void on_exit_clicked();
 
+    void on_yes_clicked();
+
+    void on_no_clicked();
+
 private:
     Ui::Game_Screen *ui;
 
@@ -51,12 +55,14 @@ private:
     QGridLayout *layouts[9];
     QGridLayout *randomLayout;
     QFrame *frames[9];
+    QFrame *surfr;
     QLabel *player1_name;
     QLabel *player2_name;
     QLabel *player1_elo;
     QLabel *player2_elo;
     QLabel *player1_win;
     QLabel *player2_win;
+    QLabel *noti;
 
     room *client_room;
     TcpClient *client;

@@ -20,6 +20,14 @@ mainmenulogin::mainmenulogin(QWidget *parent)
     createRoom->close();
     joinRoom->close();
     // connect(client, &TcpClient::dataReady, this, &mainmenulogin::handleServerResponse);
+    username = QWidget::findChild<QLabel*>("username");
+    ingame = QWidget::findChild<QLabel*>("ingame");
+    wins = QWidget::findChild<QLabel*>("wins");
+    loses = QWidget::findChild<QLabel*>("loses");
+    winrate = QWidget::findChild<QLabel*>("winrate");
+    status = QWidget::findChild<QLabel*>("status");
+    profile = QWidget::findChild<QFrame*>("frame");
+    profile->setVisible(false);
 }
 
 mainmenulogin::~mainmenulogin()
@@ -154,7 +162,6 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
             }
 
             client->setRoomList(room_list);
-
         }
     }else if(jsonResponse["type"] == static_cast<int>(ResponseType::JOINROOM)){
         if(jsonResponse["message"] == "full"){
@@ -178,5 +185,23 @@ void mainmenulogin::handleServerResponse(const QByteArray& responseData){
         }
     }
 
+}
+
+
+void mainmenulogin::on_EditProfile_clicked()
+{
+    profile->setVisible(true);
+    username->setText(client->getUser().username);
+    winrate->setText(QString::number(client->getUser().winRate));
+    wins->setText(QString::number(client->getUser().wins));
+    loses->setText(QString::number(client->getUser().loses));
+    status->setText(QString::number(client->getUser().elo));
+    ingame->setText(client->getUser().ingame);
+}
+
+
+void mainmenulogin::on_pushButton_clicked()
+{
+    profile->setVisible(false);
 }
 

@@ -41,12 +41,26 @@ public:
     QPushButton *cancel_3;
     QPushButton *join;
     QLabel *warning_join;
+    QFrame *frame;
+    QLabel *label_2;
+    QLabel *label_4;
+    QLabel *label_5;
+    QLabel *label_6;
+    QLabel *label_7;
+    QLabel *label_8;
+    QLabel *username;
+    QLabel *ingame;
+    QLabel *wins;
+    QLabel *loses;
+    QLabel *status;
+    QLabel *winrate;
+    QPushButton *pushButton;
 
     void setupUi(QWidget *mainmenulogin)
     {
         if (mainmenulogin->objectName().isEmpty())
             mainmenulogin->setObjectName("mainmenulogin");
-        mainmenulogin->resize(730, 510);
+        mainmenulogin->resize(726, 503);
         mainmenulogin->setStyleSheet(QString::fromUtf8("#createRoom{\n"
 "	background: #494F55;\n"
 "}\n"
@@ -131,12 +145,12 @@ public:
         CreateRoom->setFont(font);
         JoinRoom = new QPushButton(background);
         JoinRoom->setObjectName("JoinRoom");
-        JoinRoom->setGeometry(QRect(220, 470, 140, 30));
+        JoinRoom->setGeometry(QRect(590, 470, 140, 30));
         JoinRoom->setFont(font);
         JoinRoom->setStyleSheet(QString::fromUtf8(""));
         LeaderBoard = new QPushButton(background);
         LeaderBoard->setObjectName("LeaderBoard");
-        LeaderBoard->setGeometry(QRect(410, 470, 140, 30));
+        LeaderBoard->setGeometry(QRect(730, 470, 140, 30));
         LeaderBoard->setFont(font);
         EditProfile = new QPushButton(background);
         EditProfile->setObjectName("EditProfile");
@@ -193,6 +207,66 @@ public:
         warning_join->setFont(font2);
         warning_join->setStyleSheet(QString::fromUtf8("font-size: 12px;\n"
 "color: red;"));
+        frame = new QFrame(mainmenulogin);
+        frame->setObjectName("frame");
+        frame->setGeometry(QRect(170, 180, 400, 150));
+        frame->setStyleSheet(QString::fromUtf8("background: #494F55;\n"
+"color: white;"));
+        frame->setFrameShape(QFrame::StyledPanel);
+        frame->setFrameShadow(QFrame::Raised);
+        label_2 = new QLabel(frame);
+        label_2->setObjectName("label_2");
+        label_2->setGeometry(QRect(20, 10, 91, 21));
+        label_4 = new QLabel(frame);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(20, 30, 91, 21));
+        label_5 = new QLabel(frame);
+        label_5->setObjectName("label_5");
+        label_5->setGeometry(QRect(20, 50, 63, 20));
+        label_6 = new QLabel(frame);
+        label_6->setObjectName("label_6");
+        label_6->setGeometry(QRect(20, 70, 63, 20));
+        label_7 = new QLabel(frame);
+        label_7->setObjectName("label_7");
+        label_7->setGeometry(QRect(20, 90, 63, 20));
+        label_8 = new QLabel(frame);
+        label_8->setObjectName("label_8");
+        label_8->setGeometry(QRect(20, 110, 71, 21));
+        username = new QLabel(frame);
+        username->setObjectName("username");
+        username->setGeometry(QRect(120, 10, 200, 20));
+        QFont font3;
+        font3.setPointSize(12);
+        username->setFont(font3);
+        ingame = new QLabel(frame);
+        ingame->setObjectName("ingame");
+        ingame->setGeometry(QRect(120, 30, 200, 20));
+        ingame->setFont(font3);
+        wins = new QLabel(frame);
+        wins->setObjectName("wins");
+        wins->setGeometry(QRect(120, 50, 200, 20));
+        wins->setFont(font3);
+        loses = new QLabel(frame);
+        loses->setObjectName("loses");
+        loses->setGeometry(QRect(120, 70, 200, 20));
+        loses->setFont(font3);
+        status = new QLabel(frame);
+        status->setObjectName("status");
+        status->setGeometry(QRect(120, 90, 200, 20));
+        status->setFont(font3);
+        winrate = new QLabel(frame);
+        winrate->setObjectName("winrate");
+        winrate->setGeometry(QRect(120, 110, 200, 20));
+        winrate->setFont(font3);
+        pushButton = new QPushButton(frame);
+        pushButton->setObjectName("pushButton");
+        pushButton->setGeometry(QRect(350, 0, 50, 50));
+        QFont font4;
+        font4.setPointSize(30);
+        font4.setBold(true);
+        pushButton->setFont(font4);
+        pushButton->setStyleSheet(QString::fromUtf8("background: none;\n"
+"border: none;"));
 
         retranslateUi(mainmenulogin);
 
@@ -215,6 +289,19 @@ public:
         cancel_3->setText(QCoreApplication::translate("mainmenulogin", "Cancel", nullptr));
         join->setText(QCoreApplication::translate("mainmenulogin", "Join", nullptr));
         warning_join->setText(QString());
+        label_2->setText(QCoreApplication::translate("mainmenulogin", "USERNAME: ", nullptr));
+        label_4->setText(QCoreApplication::translate("mainmenulogin", "INGAME: ", nullptr));
+        label_5->setText(QCoreApplication::translate("mainmenulogin", "WINS: ", nullptr));
+        label_6->setText(QCoreApplication::translate("mainmenulogin", "LOSES: ", nullptr));
+        label_7->setText(QCoreApplication::translate("mainmenulogin", "ELO:", nullptr));
+        label_8->setText(QCoreApplication::translate("mainmenulogin", "WINRATE: ", nullptr));
+        username->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        ingame->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        wins->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        loses->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        status->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        winrate->setText(QCoreApplication::translate("mainmenulogin", "TextLabel", nullptr));
+        pushButton->setText(QCoreApplication::translate("mainmenulogin", "X", nullptr));
     } // retranslateUi
 
 };

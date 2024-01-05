@@ -2,6 +2,7 @@
 #include "qjsondocument.h"
 #include "ui_game_screen.h"
 #include <QLabel>
+#include "menu_login.h"
 #include <iostream>
 
 Game_Screen::Game_Screen(QWidget *parent)
@@ -9,8 +10,12 @@ Game_Screen::Game_Screen(QWidget *parent)
     , ui(new Ui::Game_Screen)
 {
     ui->setupUi(this);
-    QLabel *noti = QMainWindow::findChild<QLabel*>("notification");
+
+    noti = QMainWindow::findChild<QLabel*>("notification");
     noti->setVisible(false);
+
+    surfr = QMainWindow::findChild<QFrame*>("surrenderfr");
+    surfr->setVisible(false);
 
     setUpGrid();
     player1_name = QMainWindow::findChild<QLabel*>("name");
@@ -66,7 +71,8 @@ void Game_Screen::handleRoomIn4Changed(const room& newRoom){
                 itemButtons[i][j]->setDisabled(true);
             }
         }
-        readyButton->setText("READY");
+        // readyButton->setText("READY");
+        // noti->setVisible(false);
     }else{
         readyButton->setText("SURRENDER");
         if(client->getRoomIn4().nextBoard == -2 && client->getRoomIn4().isPlayerXTurn && client->getUser().username == client->getRoomIn4().playerX.username){
@@ -209,6 +215,7 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
     }else if(responseJson["type"] == static_cast<int>(ResponseType::NEXTTURN)){
         // qDebug() << responseJson;
         QString room_name = responseJson["room name"].toString();
+        QString message = responseJson["message"].toString();
         int next_board = responseJson["next board"].toInt();
         int last_board = responseJson["current board"].toInt();
         int last_cell = responseJson["current cell"].toInt();
@@ -225,6 +232,9 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
                 value.last_cell = last_cell;
                 value.nextBoard = next_board;
                 // client->setRoomIn4(value);
+                if(message == "board full"){
+                    value.winning_board.push_back(last_board);
+                }
             }
         }
         client->setRoomList(room_list);
@@ -268,6 +278,8 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
                 if(value.playerX.username == winner){
                     value.playerX.elo += 10;
                     value.playerX.wins += 1;
+                    noti->setText("X win");
+                    noti->setVisible(true);
                 }else{
                     value.playerX.elo -= 5;
                     value.playerX.loses += 1;
@@ -276,6 +288,8 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
                 if(value.playerO.username == winner){
                     value.playerO.elo += 10;
                     value.playerO.wins += 1;
+                    noti->setText("O win");
+                    noti->setVisible(true);
                 }else{
                     value.playerO.elo -= 5;
                     value.playerO.loses += 1;
@@ -401,13 +415,6 @@ void Game_Screen::itemClicked() {
     data["current_cell"] = current_cell;
     data["current_board"] = current_board;
     data["player username"] = client->getUser().username;
-
-    // if(client->getRoomIn4().isPlayerXTurn){
-    //     clickedButton->setText("X");
-    // }else{
-    //     clickedButton->setText("O");
-    // }
-
     client->sendRequestToServer(RequestType::MOVE, data);
 }
 
@@ -425,12 +432,44 @@ void Game_Screen::on_readyButton_clicked()
         client->sendRequestToServer(RequestType::UNREADY, data);
     }else if(readyButton->text() == "START"){
         client->sendRequestToServer(RequestType::START, data);
+        noti->setVisible(false);
+    }else if(readyButton->text() == "SURRENDER"){
+        data["action"] = "surrender";
+        client->sendRequestToServer(RequestType::SURRENDER, data);
     }
 }
 
 
 void Game_Screen::on_exit_clicked()
 {
+    if(client->getRoomIn4().gameStart){
+        surfr->setVisible(true);
+    }else{
+        mainmenulogin *new_screen = new mainmenulogin();
+        new_screen->show();
+        new_screen->setClient(client);
+        this->hide();
+    }
 
+}
+
+
+void Game_Screen::on_yes_clicked()
+{
+    QJsonObject data;
+    data["room name"] = client->getRoomIn4().roomName;
+    data["action"] = "exit";
+    data["username"] = client->getUser().username;
+    mainmenulogin *new_screen = new mainmenulogin();
+    new_screen->show();
+    new_screen->setClient(client);
+    this->hide();
+    client->sendRequestToServer(RequestType::SURRENDER, data);
+}
+
+
+void Game_Screen::on_no_clicked()
+{
+    surfr->setVisible(false);
 }
 

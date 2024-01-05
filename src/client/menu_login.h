@@ -42,15 +42,26 @@ private slots:
 
     void handleServerResponse(const QByteArray& responseData);
 
+    void on_EditProfile_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::mainmenulogin *ui;
     QFrame *createRoom;
     QFrame *joinRoom;
+    QFrame *profile;
     QLineEdit *createRoomInput;
     QLineEdit *joinRoomInput;
     QLabel *warning_create;
     QLabel *warning_join;
     QTimer *timer;
+    QLabel *username;
+    QLabel *ingame;
+    QLabel *wins;
+    QLabel *loses;
+    QLabel *winrate;
+    QLabel *status;
 
     TcpClient *client;
 

@@ -67,6 +67,10 @@ public:
     QLabel *timer;
     QPushButton *readyButton;
     QLabel *notification;
+    QFrame *surrenderfr;
+    QLabel *label;
+    QPushButton *yes;
+    QPushButton *no;
 
     void setupUi(QMainWindow *Game_Screen)
     {
@@ -376,6 +380,36 @@ public:
         notification->setStyleSheet(QString::fromUtf8(""));
         notification->setScaledContents(true);
         notification->setAlignment(Qt::AlignCenter);
+        surrenderfr = new QFrame(centralwidget);
+        surrenderfr->setObjectName("surrenderfr");
+        surrenderfr->setGeometry(QRect(130, 140, 461, 151));
+        surrenderfr->setStyleSheet(QString::fromUtf8("background: #D3D3D3;\n"
+"font-size: 20px;\n"
+"border-radius: 20px;"));
+        surrenderfr->setFrameShape(QFrame::StyledPanel);
+        surrenderfr->setFrameShadow(QFrame::Raised);
+        label = new QLabel(surrenderfr);
+        label->setObjectName("label");
+        label->setGeometry(QRect(10, 10, 441, 71));
+        label->setFont(font2);
+        label->setStyleSheet(QString::fromUtf8("color: red;"));
+        label->setAlignment(Qt::AlignCenter);
+        yes = new QPushButton(surrenderfr);
+        yes->setObjectName("yes");
+        yes->setGeometry(QRect(260, 80, 131, 41));
+        yes->setFont(font2);
+        yes->setStyleSheet(QString::fromUtf8("background: red;\n"
+"border-radius: 10px;\n"
+"color: white;\n"
+"font-size: 30px;"));
+        no = new QPushButton(surrenderfr);
+        no->setObjectName("no");
+        no->setGeometry(QRect(60, 80, 131, 41));
+        no->setFont(font2);
+        no->setStyleSheet(QString::fromUtf8("background: black;\n"
+"border-radius: 10px;\n"
+"color: white;\n"
+"font-size: 30px;"));
         Game_Screen->setCentralWidget(centralwidget);
 
         retranslateUi(Game_Screen);
@@ -402,6 +436,9 @@ public:
         timer->setText(QCoreApplication::translate("Game_Screen", "Time:", nullptr));
         readyButton->setText(QCoreApplication::translate("Game_Screen", "READY", nullptr));
         notification->setText(QCoreApplication::translate("Game_Screen", "Player 1 Wins !", nullptr));
+        label->setText(QCoreApplication::translate("Game_Screen", "You are in game. Do you want to surrender?", nullptr));
+        yes->setText(QCoreApplication::translate("Game_Screen", "YES", nullptr));
+        no->setText(QCoreApplication::translate("Game_Screen", "NO", nullptr));
     } // retranslateUi
 
 };

@@ -87,7 +87,7 @@ void registerform::on_register_btn_clicked()
         newUser["username"] = username->text();
         newUser["password"] = password->text();
         newUser["ingame"] = ingame->text();
-        // client->sendRequestToServer(RequestType::REGISTER, newUser);
+        client->sendRequestToServer(RequestType::REGISTER, newUser);
     }
 }
 
@@ -127,19 +127,19 @@ void registerform::on_Back_btn_clicked()
 void registerform::handleServerResponse(const QByteArray& responseData){
     // qDebug() << responseData << "\n";
     QJsonDocument response = QJsonDocument::fromJson(responseData);
-    // if(response["type"] == static_cast<int>(ResponseType::REGISTER)){
-    //     if(response["message"] == "register successfully"){
-    //         QJsonObject data;
-    //         // client->sendRequestToServer(RequestType::UPDATEDATA, data);
-    //         loginform *loginUI = new loginform();
-    //         loginUI->setTcpClient(client);
-    //         loginUI->show();
-    //         this->hide();
-    //     }else if(response["message"] == "existed username"){
-    //         warning_username->setText("This username has already existed");
-    //     }else if(response["message"] == "existed ingame"){
-    //         warning_username->setText("This ingame has already existed");
-    //     }
-    // }
+    if(response["type"] == static_cast<int>(ResponseType::REGISTER)){
+        if(response["message"] == "register successfully"){
+            QJsonObject data;
+            // client->sendRequestToServer(RequestType::UPDATEDATA, data);
+            loginform *loginUI = new loginform();
+            loginUI->setTcpClient(client);
+            loginUI->show();
+            this->hide();
+        }else if(response["message"] == "existed username"){
+            warning_username->setText("This username has already existed");
+        }else if(response["message"] == "existed ingame"){
+            warning_username->setText("This ingame has already existed");
+        }
+    }
 }
 

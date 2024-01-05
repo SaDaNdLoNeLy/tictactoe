@@ -48,11 +48,13 @@ static constexpr auto qt_meta_stringdata_CLASSGame_ScreenENDCLASS = QtMocHelpers
     "room",
     "newRoom",
     "on_readyButton_clicked",
-    "on_exit_clicked"
+    "on_exit_clicked",
+    "on_yes_clicked",
+    "on_no_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSGame_ScreenENDCLASS_t {
-    uint offsetsAndSizes[20];
+    uint offsetsAndSizes[24];
     char stringdata0[12];
     char stringdata1[12];
     char stringdata2[1];
@@ -63,6 +65,8 @@ struct qt_meta_stringdata_CLASSGame_ScreenENDCLASS_t {
     char stringdata7[8];
     char stringdata8[23];
     char stringdata9[16];
+    char stringdata10[15];
+    char stringdata11[14];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSGame_ScreenENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -77,7 +81,9 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSGame_ScreenENDCLASS_t qt_meta_s
         QT_MOC_LITERAL(80, 4),  // "room"
         QT_MOC_LITERAL(85, 7),  // "newRoom"
         QT_MOC_LITERAL(93, 22),  // "on_readyButton_clicked"
-        QT_MOC_LITERAL(116, 15)   // "on_exit_clicked"
+        QT_MOC_LITERAL(116, 15),  // "on_exit_clicked"
+        QT_MOC_LITERAL(132, 14),  // "on_yes_clicked"
+        QT_MOC_LITERAL(147, 13)   // "on_no_clicked"
     },
     "Game_Screen",
     "itemClicked",
@@ -88,7 +94,9 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSGame_ScreenENDCLASS_t qt_meta_s
     "room",
     "newRoom",
     "on_readyButton_clicked",
-    "on_exit_clicked"
+    "on_exit_clicked",
+    "on_yes_clicked",
+    "on_no_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -100,7 +108,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSGame_ScreenENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -108,16 +116,20 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSGame_ScreenENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   44,    2, 0x0a,    1 /* Public */,
-       3,    1,   45,    2, 0x0a,    2 /* Public */,
-       5,    1,   48,    2, 0x0a,    4 /* Public */,
-       8,    0,   51,    2, 0x08,    6 /* Private */,
-       9,    0,   52,    2, 0x08,    7 /* Private */,
+       1,    0,   56,    2, 0x0a,    1 /* Public */,
+       3,    1,   57,    2, 0x0a,    2 /* Public */,
+       5,    1,   60,    2, 0x0a,    4 /* Public */,
+       8,    0,   63,    2, 0x08,    6 /* Private */,
+       9,    0,   64,    2, 0x08,    7 /* Private */,
+      10,    0,   65,    2, 0x08,    8 /* Private */,
+      11,    0,   66,    2, 0x08,    9 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QByteArray,    4,
     QMetaType::Void, 0x80000000 | 6,    7,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -144,6 +156,10 @@ Q_CONSTINIT const QMetaObject Game_Screen::staticMetaObject = { {
         // method 'on_readyButton_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_exit_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_yes_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_no_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -160,6 +176,8 @@ void Game_Screen::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 2: _t->handleRoomIn4Changed((*reinterpret_cast< std::add_pointer_t<room>>(_a[1]))); break;
         case 3: _t->on_readyButton_clicked(); break;
         case 4: _t->on_exit_clicked(); break;
+        case 5: _t->on_yes_clicked(); break;
+        case 6: _t->on_no_clicked(); break;
         default: ;
         }
     }
@@ -184,13 +202,13 @@ int Game_Screen::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 7)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }

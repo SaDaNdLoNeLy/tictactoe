@@ -118,7 +118,6 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             loginUser->winRate = login_user["win rate"].toDouble();
             tcpClient->setUserfromUser(*loginUser);
             tcpClient->sendRequestToServer(RequestType::GETONLINEUSER, data);
-            // tcpClient->sendRequestToServer(RequestType::GETROOMLIST, data);
 
             mainmenulogin *menu_login = new mainmenulogin();
             menu_login->setClient(tcpClient);
@@ -196,21 +195,22 @@ void loginform::handleServerResponse(const QByteArray& responseData){
 
         for(QJsonValue roomValue : room_list){
             QJsonObject room_data = roomValue.toObject();
-            room *new_room = new room();
-            new_room->roomName = room_data["room name"].toString();
-            new_room->player1_ready = room_data["player1_ready"].toBool();
-            new_room->player2_ready = room_data["player2_ready"].toBool();
-            new_room->isFull = room_data["is full"].toBool();
-            new_room->gameStart = room_data["game start"].toBool();
-            new_room->turn = room_data["turn"].toInt();
-            new_room->isPlayerXTurn = room_data["is player X turn"].toBool();
-            new_room->nextBoard = room_data["next board"].toInt();
-            new_room->playerX = tcpClient->findUserByUsername(room_data["player X username"].toString());
-            if(new_room->isFull){
-                new_room->playerO = tcpClient->findUserByUsername(room_data["player O username"].toString());
+            // room *new_room = new room();
+            room new_room = tcpClient->findRoomByRoomName(room_data["room name"].toString());
+            new_room.roomName = room_data["room name"].toString();
+            new_room.player1_ready = room_data["player1_ready"].toBool();
+            new_room.player2_ready = room_data["player2_ready"].toBool();
+            new_room.isFull = room_data["is full"].toBool();
+            new_room.gameStart = room_data["game start"].toBool();
+            new_room.turn = room_data["turn"].toInt();
+            new_room.isPlayerXTurn = room_data["is player X turn"].toBool();
+            new_room.nextBoard = room_data["next board"].toInt();
+            new_room.playerX = tcpClient->findUserByUsername(room_data["player X username"].toString());
+            if(new_room.isFull){
+                new_room.playerO = tcpClient->findUserByUsername(room_data["player O username"].toString());
             }
 
-            updated_room_list.push_back(*new_room);
+            updated_room_list.push_back(new_room);
         }
         tcpClient->setRoomList(updated_room_list);
     }

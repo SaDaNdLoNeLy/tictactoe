@@ -8,6 +8,7 @@ enum class RequestType
 {
     LOGIN,
     LOGOUT,
+    REGISTER,
     UPDATEONLINEUSER,
     GETONLINEUSER,
     GETROOMLIST,
@@ -29,6 +30,7 @@ enum class ResponseType
 {
     LOGIN,
     LOGOUT,
+    REGISTER,
     UPDATEONLINEUSER,
     GETONLINEUSER,
     GETROOMLIST,
