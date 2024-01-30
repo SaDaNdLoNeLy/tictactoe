@@ -212,8 +212,34 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
             }
         }
         client->setRoomList(room_list);
+    }else if(responseJson["type"] == static_cast<int>(ResponseType::WINBOARD)){
+        qDebug() << "winning board: " << responseJson;
+        QString room_name = responseJson["room name"].toString();
+        int last_board = responseJson["current board"].toInt();
+        int last_cell = responseJson["current cell"].toInt();
+        int next_board = responseJson["next board"].toInt();
+        int board_win = last_board;
+
+        std::vector<room> room_list = client->getRoomList();
+        for(room &value : room_list){
+            if(value.roomName == room_name){
+                if(value.isPlayerXTurn){
+                    value.isPlayerXTurn = false;
+                }else{
+                    value.isPlayerXTurn = true;
+                }
+                value.last_board = last_board;
+                value.last_cell = last_cell;
+                value.nextBoard = next_board;
+                value.winning_board.push_back(board_win);
+            }
+        }
+        client->setRoomList(room_list);
+        room found_room = client->findRoomByRoomName(room_name);
+        client->setRoomIn4(found_room);
+        qDebug() << "next turn: " << client->getRoomIn4().nextBoard;
     }else if(responseJson["type"] == static_cast<int>(ResponseType::NEXTTURN)){
-        // qDebug() << responseJson;
+        qDebug() << "next turn: " << responseJson;
         QString room_name = responseJson["room name"].toString();
         QString message = responseJson["message"].toString();
         int next_board = responseJson["next board"].toInt();
@@ -235,32 +261,6 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
                 if(message == "board full"){
                     value.winning_board.push_back(last_board);
                 }
-            }
-        }
-        client->setRoomList(room_list);
-
-        room found_room = client->findRoomByRoomName(room_name);
-        client->setRoomIn4(found_room);
-    }else if(responseJson["type"] == static_cast<int>(ResponseType::WINBOARD)){
-        // qDebug() << responseJson;
-        QString room_name = responseJson["room name"].toString();
-        int last_board = responseJson["current board"].toInt();
-        int last_cell = responseJson["current cell"].toInt();
-        int next_board = -1;
-        int board_win = last_board;
-
-        std::vector<room> room_list = client->getRoomList();
-        for(room &value : room_list){
-            if(value.roomName == room_name){
-                if(value.isPlayerXTurn){
-                    value.isPlayerXTurn = false;
-                }else{
-                    value.isPlayerXTurn = true;
-                }
-                value.last_board = last_board;
-                value.last_cell = last_cell;
-                value.nextBoard = next_board;
-                value.winning_board.push_back(board_win);
             }
         }
         client->setRoomList(room_list);
@@ -306,6 +306,8 @@ void Game_Screen::handleServerResponse(const QByteArray& responseData){
 
         room found_room = client->findRoomByRoomName(room_name);
         client->setRoomIn4(found_room);
+    }else if(responseJson["type"] == static_cast<int>(ResponseType::SURRENDER)){
+
     }
 }
 
@@ -435,6 +437,13 @@ void Game_Screen::on_readyButton_clicked()
         noti->setVisible(false);
     }else if(readyButton->text() == "SURRENDER"){
         data["action"] = "surrender";
+        data["username"] = client->getUser().username;
+        data["room name"] = client->getRoomIn4().roomName;
+        if(client->getUser().username == client->getRoomIn4().playerX.username){
+            data["other player"] = client->getRoomIn4().playerO.username;
+        }else if(client->getUser().username == client->getRoomIn4().playerO.username){
+            data["other player"] = client->getRoomIn4().playerX.username;
+        }
         client->sendRequestToServer(RequestType::SURRENDER, data);
     }
 }

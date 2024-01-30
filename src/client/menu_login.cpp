@@ -70,7 +70,8 @@ void mainmenulogin::on_create_clicked()
         QJsonObject roomData;
         roomData["room name"] = roomName;
         roomData["player X username"] = client->getUser().username;
-        // qDebug() << client->getUser().username << "\n";
+        qDebug() << client->getUser().username << "\n";
+        qDebug() << roomName;
         client->sendRequestToServer(RequestType::CREATEROOM, roomData);
     }else{
         warning_create->setText("Room name cannot be empty");

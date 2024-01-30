@@ -147,12 +147,12 @@ void loginform::handleServerResponse(const QByteArray& responseData){
             online_user.push_back(*onlineUser);
         }
         tcpClient->setOnlineUser(online_user);
-        // qDebug() << tcpClient->getOnlineUser()[0].username << "\n";
+        qDebug() << tcpClient->getOnlineUser().size() << "\n";
         if(jsonResponse["room list size"].toInt() > 0){
             QJsonObject data;
             tcpClient->sendRequestToServer(RequestType::GETROOMLIST, data);
         }
-    }else if(jsonResponse["type"] == static_cast<int>(RequestType::UPDATEONLINEUSER)){
+    }else if(jsonResponse["type"] == static_cast<int>(ResponseType::UPDATEONLINEUSER)){
         if(jsonResponse["message"] == "add user to online list"){
             QJsonObject userObject = jsonResponse["user"].toObject();
             user *onlineUser = new user();
